@@ -36,17 +36,61 @@ header .hamburger {
   cursor: pointer;
 }
 header .hamburger .bar {
+  transition: all 0.3s ease-in-out;
+}
+header .hamburger.active .bar:nth-child(2) {
+  opacity: 0;
+}
+header .hamburger.active .bar:nth-child(1) {
+  transform: rotate(45deg) translateY(11px);
+}
+header .hamburger.active .bar:nth-child(3) {
+  transform: rotate(-45deg) translateY(-11px);
+}
+header .hamburger .bar {
   background-color: #8f949b;
   width: 25px;
   height: 3px;
   margin: 5px auto;
   transition: all 0.3s ease-in-out;
 }
-aside {
-  position: absolute;
-  height: calc(100vh - 60px);
+aside.navbar {
+  position: fixed;
+  height: calc(100vh - 60px - 40px);
   width: calc(100% / 7);
-  background-color: #8f949b;
+  background-color: #edf2f4;
   top: 60px;
+  right: -100%;
+  transition: right 0.5s;
+}
+main {
+  height: calc(100vh - 60px - 40px);
+  width: 100%;
+}
+main #colors {
+  height: 100%;
+  display: grid;
+  grid-template-columns: repeat(calc(100% / 6), 6);
+  grid-auto-flow: column;
+}
+main #colors .palette {
+  height: 100%;
+  border: 2px solid #000;
+}
+aside.navbar.active {
   right: 0;
+}
+footer {
+  width: 100%;
+  height: 40px;
+  background-color: #edf2f4;
+  color: #8f949b;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: 0.5rem;
+}
+footer .heart {
+  color: rgb(226, 85, 85);
 }
