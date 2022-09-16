@@ -1,3 +1,6 @@
+:root {
+  --shf: 4.9406564584124654e-322;
+}
 * {
   padding: 0;
   margin: 0;
@@ -20,6 +23,10 @@ header {
   justify-content: space-between;
   align-items: center;
   padding: 0 2rem;
+  position: relative;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+  z-index: 1;
 }
 header .save {
   font-size: 1.3rem;
@@ -57,11 +64,15 @@ header .hamburger .bar {
 aside.navbar {
   position: fixed;
   height: calc(100vh - 60px - 40px);
-  width: calc(100% / 7);
+  width: calc(100% / 6);
   background-color: #edf2f4;
   top: 60px;
   right: -100%;
-  transition: right 0.5s;
+  transition: right 0.3s;
+  z-index: 2;
+}
+aside.navbar.active {
+  right: -1px;
 }
 main {
   height: calc(100vh - 60px - 40px);
@@ -69,16 +80,30 @@ main {
 }
 main #colors {
   height: 100%;
+  width: 100%;
   display: grid;
-  grid-template-columns: repeat(calc(100% / 6), 6);
-  grid-auto-flow: column;
+  grid-template-columns: repeat(5, calc(100% / 5));
 }
-main #colors .palette {
+main #colors .palette .palette-items {
   height: 100%;
-  border: 2px solid #000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  font-size: 1.1rem;
+  color: #dedede;
+  text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
 }
-aside.navbar.active {
-  right: 0;
+main #colors .palette .palette-items span,
+main #colors .palette .palette-items i {
+  cursor: pointer;
+}
+main #colors .palette .palette-items .fa-copy {
+  font-size: 1.2rem;
+}
+main #colors .palette .palette-items .color-code {
+  text-transform: uppercase;
 }
 footer {
   width: 100%;
@@ -90,6 +115,10 @@ footer {
   align-items: center;
   text-align: center;
   gap: 0.5rem;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px -1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px -2px 6px 2px;
+  position: relative;
+  z-index: 1;
 }
 footer .heart {
   color: rgb(226, 85, 85);

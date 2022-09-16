@@ -26,4 +26,4 @@ $ git clone https://github.com/sinansarikaya/javascript-student-data.git
 
 You can try to make it yourself by looking at the design in Figma.
 
-#### [View the design in Figma](https://www.figma.com/file/A02QpgK4dDfB43KVhTWYmD/student-data?node-id=1%3A24)
+#### [View the design in Figma](https://www.figma.com/file/ayNafC547sY1sNEHo7YtZl/Colors-Palette-App)
