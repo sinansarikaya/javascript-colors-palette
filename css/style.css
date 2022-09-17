@@ -1,5 +1,8 @@
 :root {
-  --shf: 4.9406564584124654e-322;
+  --primary: hsl(197, 24%, 94%);
+  --secondary: hsl(215, 6%, 65%);
+  --search-bg: hsl(197, 24%, 90%);
+  --search-color: hsl(215, 6%, 60%);
 }
 * {
   padding: 0;
@@ -14,11 +17,68 @@
   justify-content: space-between;
   align-items: center;
 }
+#saveBox {
+  background-color: var(--primary);
+  color: var(--secondary);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 50%;
+  max-width: 300px;
+  z-index: 2;
+  transform: translate(-50%, -50%);
+  gap: 1.2rem;
+  padding: 2rem 1rem;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  border: 2ps solid var(--secondary);
+  border-radius: 1rem;
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s, opacity 0.5s linear;
+}
+#saveBox.active {
+  visibility: visible;
+  opacity: 1;
+}
+#saveBox .palette-title {
+  font-size: 1.2rem;
+}
+#palette-name {
+  padding: 0.7rem 1rem;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  background-color: var(--search-bg);
+  color: var(--search-color);
+  border: 1px solid var(--secondary);
+  outline: none;
+  border-radius: 0.5rem;
+  width: 100%;
+}
+#palette-name::placeholder {
+  color: var(--search-color);
+}
+#saveBox .saveSubmit {
+  width: 100%;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  border: 1px solid var(--secondary);
+  color: var(--secondary);
+  border-radius: 0.5rem;
+  cursor: pointer;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  transition: background 0.5s;
+}
+#saveBox .saveSubmit:hover {
+  background-color: var(--search-bg);
+}
 header {
   width: 100%;
   height: 60px;
-  background-color: #edf2f4;
-  color: #8f949b;
+  background-color: var(--primary);
+  color: var(--secondary);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -30,13 +90,14 @@ header {
 }
 header .save {
   font-size: 1.3rem;
+  cursor: pointer;
 }
 header .social {
   display: flex;
   gap: 0.7rem;
 }
 header .social a {
-  color: #8f949b;
+  color: var(--secondary);
   font-size: 1.5rem;
 }
 header .hamburger {
@@ -55,7 +116,7 @@ header .hamburger.active .bar:nth-child(3) {
   transform: rotate(-45deg) translateY(-11px);
 }
 header .hamburger .bar {
-  background-color: #8f949b;
+  background-color: var(--secondary);
   width: 25px;
   height: 3px;
   margin: 5px auto;
@@ -65,14 +126,44 @@ aside.navbar {
   position: fixed;
   height: calc(100vh - 60px - 40px);
   width: calc(100% / 6);
-  background-color: #edf2f4;
+  background-color: var(--primary);
+  color: var(--secondary);
+  border: 1px solid var(--secondary);
   top: 60px;
   right: -100%;
   transition: right 0.3s;
   z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
 }
 aside.navbar.active {
   right: -1px;
+}
+aside.navbar .search-container {
+  background-color: var(--search-bg);
+  color: var(--search-color);
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding-right: 1.5rem;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+}
+aside.navbar .search-container .search {
+  background-color: var(--search-bg);
+  color: var(--search-color);
+  width: 100%;
+  padding: 1rem 0.5rem 1rem 1.5rem;
+  outline: none;
+  border: 0;
+  font-size: 1rem;
+}
+aside.navbar .search-container .search::placeholder {
+  color: var(--search-color);
+}
+aside.navbar .search-container .fa-magnifying-glass {
+  font-size: 1.1rem;
 }
 main {
   height: calc(100vh - 60px - 40px);
@@ -92,8 +183,8 @@ main #colors .palette .palette-items {
   justify-content: center;
   gap: 1rem;
   font-size: 1.1rem;
-  color: #dedede;
-  text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
+  color: hsl(0, 0%, 87%);
+  text-shadow: 2px 2px 2px hsla(0, 0%, 0%, 0.5);
 }
 main #colors .palette .palette-items span,
 main #colors .palette .palette-items i {
@@ -108,18 +199,18 @@ main #colors .palette .palette-items .color-code {
 footer {
   width: 100%;
   height: 40px;
-  background-color: #edf2f4;
-  color: #8f949b;
+  background-color: var(--primary);
+  color: var(--secondary);
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
   gap: 0.5rem;
-  box-shadow: rgba(60, 64, 67, 0.3) 0px -1px 2px 0px,
-    rgba(60, 64, 67, 0.15) 0px -2px 6px 2px;
+  box-shadow: hsla(206, 6%, 25%, 0.3) 0px -1px 2px 0px,
+    hsla(206, 6%, 25%, 0.15) 0px -2px 6px 2px;
   position: relative;
   z-index: 1;
 }
 footer .heart {
-  color: rgb(226, 85, 85);
+  color: hsl(0, 71%, 61%);
 }
