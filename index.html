@@ -22,6 +22,16 @@
   </head>
   <body>
     <div id="container">
+      <div id="saveBox">
+        <label for="palette-name" class="palette-title">Palette Name</label>
+        <input
+          type="text"
+          id="palette-name"
+          class="pName"
+          placeholder="My new palette"
+        />
+        <input type="button" class="saveSubmit" value="Save" />
+      </div>
       <header>
         <div class="social">
           <a
@@ -43,7 +53,23 @@
           <div class="bar"></div>
         </div>
       </header>
-      <aside class="navbar">nav</aside>
+      <aside class="navbar">
+        <div class="search-container">
+          <input
+            type="search"
+            id="search"
+            class="search"
+            placeholder="Search"
+          />
+          <label for="search"
+            ><i class="fa-solid fa-magnifying-glass"></i
+          ></label>
+        </div>
+        <h3 class="favorite">Favorite Colors</h3>
+        <ul class="colorList">
+          <li class="list-item"></li>
+        </ul>
+      </aside>
       <main>
         <div id="colors">
           <div class="palette">
