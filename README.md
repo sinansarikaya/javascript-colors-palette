@@ -1,6 +1,6 @@
 # JavaScript Colors Palette
 
-![GitHub last commit](https://img.shields.io/github/last-commit/sinansarikaya/javascript-student-data?style=flat-square)
+![GitHub last commit](https://img.shields.io/github/last-commit/sinansarikaya/javascript-colors-palette?style=flat-square)
 
 Responsive colors palette app system made using JavaScript
 
@@ -9,14 +9,14 @@ Responsive colors palette app system made using JavaScript
 ### Installation Options
 
 ```
-$ git clone https://github.com/sinansarikaya/javascript-student-data.git
+$ git clone https://github.com/sinansarikaya/javascript-colors-palette.git
 ```
 
 <hr />
 
 ### Demo
 
-#### [View Demo](https://sinansarikaya.github.io/javascript-student-data/)
+#### [View Demo](https://sinansarikaya.github.io/javascript-colors-palette/)
 
 ![JavaScript Student Data](./img/demo.jpeg)
 
