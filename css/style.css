@@ -175,8 +175,13 @@ aside.navbar .search-container .search::placeholder {
 aside.navbar .search-container .fa-magnifying-glass {
   font-size: 1.1rem;
 }
-
-aside.navbar .colorList .list-item {
+aside.navbar .colorList .color-group {
+  display: flex;
+  align-items: center;
+  flex-direction: row-reverse;
+  gap: 0.5rem;
+}
+aside.navbar .colorList .color-group .list-item {
   list-style: none;
   display: flex;
   margin-bottom: 0.5rem;
@@ -184,6 +189,10 @@ aside.navbar .colorList .list-item {
   border-radius: 1rem;
   overflow: hidden;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  cursor: pointer;
+}
+aside.navbar .colorList .color-group .fa-xmark {
+  cursor: pointer;
 }
 aside.navbar .colorList .list-item .list-color {
   width: 50px;
