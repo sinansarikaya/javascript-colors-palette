@@ -2,7 +2,7 @@
 
 ![GitHub last commit](https://img.shields.io/github/last-commit/sinansarikaya/javascript-colors-palette?style=flat-square)
 
-Responsive colors palette app system made using JavaScript
+Responsive colors palette app system made using JavaScript.
 
 <hr />
 
