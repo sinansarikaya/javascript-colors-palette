@@ -10,9 +10,43 @@ const paletteName = document.querySelector("#palette-name");
 const saveSubmit = document.querySelector(".saveSubmit");
 const pName = document.querySelector(".pName");
 const colorList = document.querySelector(".colorList");
+const closeBox = document.querySelector(".fa-xmark");
+
+let getList = localStorage.getItem("Colors Palette");
+getList = JSON.parse(getList);
+let colorKeys = String(Object.keys(getList));
 
 let isLocked = [false, false, false, false, false];
 let boxOpen = false;
+
+getItems = (check) => {
+  console.log(getList); // Object
+  console.log(colorKeys); // Keys
+  console.log(getList[colorKeys]); //Values
+
+  Object.keys(getList).forEach((key) => {
+    const newH5 = document.createElement("h5");
+    const newLi = document.createElement("li");
+
+    newH5.classList.add("list-title");
+    newLi.classList.add("list-item");
+    newLi.setAttribute("data-key", key);
+
+    colorList.appendChild(newH5);
+    colorList.appendChild(newLi);
+
+    newH5.innerText = key;
+
+    getList[key].forEach((element) => {
+      const newdiv = document.createElement("div");
+      newdiv.classList.add("list-color");
+      newLi.appendChild(newdiv);
+      newdiv.style.backgroundColor = `#${element}`;
+    });
+
+    console.log(key, getList[key]);
+  });
+};
 
 const alert = (type, msg) => {};
 
@@ -66,24 +100,28 @@ save.addEventListener("click", () => {
   boxOpen = true;
 });
 
+const close = () => {
+  saveBox.classList.remove("active");
+  boxOpen = false;
+};
+closeBox.addEventListener("click", () => {
+  close();
+});
+
 saveSubmit.addEventListener("click", () => {
   let palettes = {};
+  palettes = getList;
+
   let palettesArray = [];
   colorCode.forEach((colorCodeEl) => {
     palettesArray.push(colorCodeEl.innerText);
   });
-
   palettes[paletteName.value] = palettesArray;
   localStorage.setItem("Colors Palette", JSON.stringify(palettes));
+
+  colorList.innerHTML = "";
+  getItems();
+  close();
 });
-
-getItems = () => {
-  let getList = localStorage.getItem("Colors Palette");
-
-  getList = JSON.parse(getList);
-  let colorKeys = String(Object.keys(getList));
-  console.log(colorKeys);
-  console.log(getList[colorKeys]);
-};
 getItems();
 changeColor();

@@ -44,6 +44,15 @@
   visibility: visible;
   opacity: 1;
 }
+#saveBox .fa-xmark {
+  margin-left: auto;
+  margin-right: 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+}
+#saveBox .fa-xmark:hover {
+  color: var(--search-color);
+}
 #saveBox .palette-title {
   font-size: 1.2rem;
 }
@@ -137,6 +146,7 @@ aside.navbar {
   flex-direction: column;
   align-items: center;
   gap: 1rem;
+  overflow: auto;
 }
 aside.navbar.active {
   right: -1px;
@@ -164,6 +174,21 @@ aside.navbar .search-container .search::placeholder {
 }
 aside.navbar .search-container .fa-magnifying-glass {
   font-size: 1.1rem;
+}
+
+aside.navbar .colorList .list-item {
+  list-style: none;
+  display: flex;
+  margin-bottom: 0.5rem;
+  margin-top: 0.3rem;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+aside.navbar .colorList .list-item .list-color {
+  width: 50px;
+  height: 30px;
+  background-color: red;
 }
 main {
   height: calc(100vh - 60px - 40px);
