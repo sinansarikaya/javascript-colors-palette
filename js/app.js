@@ -11,29 +11,80 @@ const saveSubmit = document.querySelector(".saveSubmit");
 const pName = document.querySelector(".pName");
 const colorList = document.querySelector(".colorList");
 const closeBox = document.querySelector(".fa-xmark");
+const search = document.querySelector(".search");
 
 let getList = localStorage.getItem("Colors Palette");
 getList = JSON.parse(getList);
-let colorKeys = String(Object.keys(getList));
+//let colorKeys = String(Object.keys(getList));
 
 let isLocked = [false, false, false, false, false];
 let boxOpen = false;
+let hasLocal = false;
+if (getList != null) {
+  hasLocal = true;
+} else {
+  hasLocal = false;
+}
 
-getItems = (check) => {
-  console.log(getList); // Object
-  console.log(colorKeys); // Keys
-  console.log(getList[colorKeys]); //Values
+const alert = (type, msg) => {};
 
-  Object.keys(getList).forEach((key) => {
+let selectedColor = search.value;
+
+search.addEventListener("input", () => {
+  selectedColor = search.value;
+  filterColor(selectedColor);
+  getItems(hasLocal);
+});
+
+const filterColor = (clr) => {
+  if (!hasLocal) {
+    return;
+  }
+  colorList.innerHTML = "";
+  const filteredColor = Object.keys(getList)
+    .filter((key) => clr.includes(key))
+    .reduce((obj, key) => {
+      obj[key] = getList[key];
+      return obj;
+    }, {});
+  return filteredColor;
+};
+filterColor(selectedColor);
+
+console.log(filterColor(selectedColor));
+
+getItems = (hasLocal) => {
+  // console.log(getList); // Object
+  // console.log(colorKeys); // Keys
+  // console.log(getList[colorKeys]); //Values
+
+  if (!hasLocal) {
+    return;
+  }
+  if (!search.value) {
+    selectedColor = Object.keys(getList);
+  }
+
+  // getList = localStorage.getItem("Colors Palette");
+  // getList = JSON.parse(getList);
+
+  Object.keys(filterColor(selectedColor)).forEach((key) => {
     const newH5 = document.createElement("h5");
+    const colorG = document.createElement("div");
+    const closeI = document.createElement("i");
     const newLi = document.createElement("li");
 
     newH5.classList.add("list-title");
+    colorG.classList.add("color-group");
+    closeI.classList.add("fa-solid", "fa-xmark", "deleteColor");
+    closeI.setAttribute("data-key", key);
     newLi.classList.add("list-item");
     newLi.setAttribute("data-key", key);
 
     colorList.appendChild(newH5);
-    colorList.appendChild(newLi);
+    colorList.appendChild(colorG);
+    colorG.appendChild(closeI);
+    colorG.appendChild(newLi);
 
     newH5.innerText = key;
 
@@ -44,11 +95,10 @@ getItems = (check) => {
       newdiv.style.backgroundColor = `#${element}`;
     });
 
-    console.log(key, getList[key]);
+    // console.log(key, getList[key]);
+    return getList;
   });
 };
-
-const alert = (type, msg) => {};
 
 hamburger.addEventListener("click", () => {
   hamburger.classList.toggle("active");
@@ -108,9 +158,12 @@ closeBox.addEventListener("click", () => {
   close();
 });
 
-saveSubmit.addEventListener("click", () => {
+saveSubmit.addEventListener("click", (e) => {
   let palettes = {};
-  palettes = getList;
+
+  if (hasLocal) {
+    palettes = getList;
+  }
 
   let palettesArray = [];
   colorCode.forEach((colorCodeEl) => {
@@ -119,9 +172,48 @@ saveSubmit.addEventListener("click", () => {
   palettes[paletteName.value] = palettesArray;
   localStorage.setItem("Colors Palette", JSON.stringify(palettes));
 
+  hasLocal = true;
+
+  pName.value = "";
   colorList.innerHTML = "";
-  getItems();
   close();
+  e.preventDefault();
+  getItems(hasLocal);
 });
-getItems();
+getItems(hasLocal);
+
+const listItem = document.querySelectorAll(".list-item");
+
+listItem.forEach((item) => {
+  item.addEventListener("click", (e) => {
+    const colorGet = Object.keys(getList)
+      .filter((key) => key.includes(e.currentTarget.dataset.key))
+      .reduce((obj, key) => {
+        return Object.assign(obj, {
+          [key]: getList[key],
+        });
+      }, {});
+
+    Object.keys(colorGet).forEach((key) => {
+      colorGet[key].forEach((element, i) => {
+        colors[i].style.backgroundColor = `#${element}`;
+        colorCode[i].innerText = `${element}`;
+      });
+    });
+  });
+});
+
+const deleteColor = document.querySelectorAll(".deleteColor");
+
+deleteColor.forEach((element) => {
+  // getList = localStorage.getItem("Colors Palette");
+  // getList = JSON.parse(getList);
+  element.addEventListener("click", (e) => {
+    delete getList[e.currentTarget.dataset.key];
+    localStorage.setItem("Colors Palette", JSON.stringify(getList));
+    colorList.innerHTML = "";
+    getItems(hasLocal);
+  });
+});
+
 changeColor();
