@@ -1,6 +1,7 @@
 :root {
   --primary: hsl(197, 24%, 94%);
   --secondary: hsl(215, 6%, 65%);
+  --secondary-hover: hsl(215, 6%, 40%);
   --search-bg: hsl(197, 24%, 90%);
   --search-color: hsl(215, 6%, 60%);
 }
@@ -8,6 +9,7 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+  font-family: "Ubuntu", sans-serif;
 }
 #container {
   width: 100%;
@@ -28,7 +30,7 @@
   top: 50%;
   left: 50%;
   width: 50%;
-  max-width: 300px;
+  max-width: 500px;
   z-index: 2;
   transform: translate(-50%, -50%);
   gap: 1.2rem;
@@ -49,9 +51,10 @@
   margin-right: 1rem;
   font-size: 1rem;
   cursor: pointer;
+  transition: color 0.5s;
 }
 #saveBox .fa-xmark:hover {
-  color: var(--search-color);
+  color: var(--secondary-hover);
 }
 #saveBox .palette-title {
   font-size: 1.2rem;
@@ -100,14 +103,10 @@ header {
 header .save {
   font-size: 1.3rem;
   cursor: pointer;
+  transition: color 0.5s;
 }
-header .social {
-  display: flex;
-  gap: 0.7rem;
-}
-header .social a {
-  color: var(--secondary);
-  font-size: 1.5rem;
+header .save:hover {
+  color: var(--secondary-hover);
 }
 header .hamburger {
   cursor: pointer;
@@ -179,6 +178,14 @@ aside.navbar .favorite {
   margin: 1rem auto;
   text-align: center;
 }
+aside.navbar .colorList {
+  height: auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: auto;
+}
 aside.navbar .colorList .color-group {
   display: flex;
   align-items: center;
@@ -201,6 +208,20 @@ aside.navbar .colorList .color-group .fa-xmark {
 aside.navbar .colorList .list-item .list-color {
   width: 50px;
   height: 30px;
+}
+aside.navbar .social {
+  margin-top: auto;
+  margin-bottom: 1rem;
+  display: flex;
+  gap: 0.7rem;
+}
+aside.navbar .social a {
+  color: var(--secondary);
+  font-size: 1.5rem;
+  transition: color 0.5s;
+}
+aside.navbar .social a:hover {
+  color: var(--secondary-hover);
 }
 main {
   height: calc(100vh - 60px - 40px);
@@ -226,11 +247,17 @@ main #colors .palette .palette-items {
 main #colors .palette .palette-items span,
 main #colors .palette .palette-items i {
   cursor: pointer;
+  transition: color 0.5s;
+}
+main #colors .palette .palette-items span:hover,
+main #colors .palette .palette-items i:hover {
+  color: hsl(0, 0%, 75%);
 }
 main #colors .palette .palette-items .fa-copy {
   font-size: 1.2rem;
 }
 main #colors .palette .palette-items .color-code {
+  font-size: 1.3rem;
   text-transform: uppercase;
 }
 footer {
@@ -250,6 +277,13 @@ footer {
 }
 footer .heart {
   color: hsl(0, 71%, 61%);
+}
+footer a {
+  color: var(--secondary);
+  transition: color 0.5s;
+}
+footer a:hover {
+  color: var(--secondary-hover);
 }
 @media (max-width: 1600px) {
   aside.navbar {
@@ -293,6 +327,9 @@ footer .heart {
 @media (max-width: 480px) {
   aside.navbar {
     width: 80%;
+  }
+  #saveBox {
+    width: 90%;
   }
 }
 @media (max-width: 370px) {
