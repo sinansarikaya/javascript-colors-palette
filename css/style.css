@@ -88,7 +88,7 @@
 }
 header {
   width: 100%;
-  height: 60px;
+  height: 70px;
   background-color: var(--primary);
   color: var(--secondary);
   display: flex;
@@ -99,6 +99,10 @@ header {
   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
     rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
   z-index: 1;
+}
+header .logo {
+  width: 100px;
+  height: 60px;
 }
 header .save {
   font-size: 1.3rem;
@@ -132,12 +136,12 @@ header .hamburger .bar {
 }
 aside.navbar {
   position: fixed;
-  height: calc(100vh - 60px - 40px);
+  height: calc(100vh - 70px - 40px);
   width: calc(100% / 5 - 1rem);
   background-color: var(--primary);
   color: var(--secondary);
   border: 1px solid var(--secondary);
-  top: 60px;
+  top: 70px;
   right: -100%;
   transition: right 0.3s;
   z-index: 2;
@@ -224,7 +228,7 @@ aside.navbar .social a:hover {
   color: var(--secondary-hover);
 }
 main {
-  height: calc(100vh - 60px - 40px);
+  height: calc(100vh - 70px - 40px);
   width: 100%;
 }
 main #colors {
