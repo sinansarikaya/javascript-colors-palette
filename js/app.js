@@ -12,6 +12,7 @@ const pName = document.querySelector(".pName");
 const colorList = document.querySelector(".colorList");
 const closeBox = document.querySelector(".fa-xmark");
 const search = document.querySelector(".search");
+const colorX = document.querySelector(".colorList .fa-xmark");
 
 let getList = localStorage.getItem("Colors Palette");
 getList = JSON.parse(getList);
@@ -205,15 +206,16 @@ listItem.forEach((item) => {
 
 const deleteColor = document.querySelectorAll(".deleteColor");
 
-deleteColor.forEach((element) => {
-  // getList = localStorage.getItem("Colors Palette");
-  // getList = JSON.parse(getList);
-  element.addEventListener("click", (e) => {
-    delete getList[e.currentTarget.dataset.key];
+//capturing
+colorList.addEventListener("click", (e) => {
+  if (e.target.className == "fa-solid fa-xmark deleteColor") {
+    e.target.parentElement.previousElementSibling.remove();
+    e.target.parentElement.remove();
+    delete getList[e.target.getAttribute("data-key")];
     localStorage.setItem("Colors Palette", JSON.stringify(getList));
-    colorList.innerHTML = "";
     getItems(hasLocal);
-  });
+  }
+  // console.log(e.target.className);
 });
 
 changeColor();
