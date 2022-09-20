@@ -1,5 +1,6 @@
 const navbar = document.querySelector(".navbar");
 const hamburger = document.querySelector(".hamburger");
+const colorsDom = document.querySelector("#colors");
 const colors = document.querySelectorAll("#colors .palette");
 const colorCode = document.querySelectorAll(".color-code");
 const lock = document.querySelectorAll(".lock");
@@ -215,7 +216,35 @@ colorList.addEventListener("click", (e) => {
     localStorage.setItem("Colors Palette", JSON.stringify(getList));
     getItems(hasLocal);
   }
-  // console.log(e.target.className);
+});
+
+const RGBToHSL = (r, g, b) => {
+  r /= 255;
+  g /= 255;
+  b /= 255;
+  const l = Math.max(r, g, b);
+  const s = l - Math.min(r, g, b);
+  const h = s
+    ? l === r
+      ? (g - b) / s
+      : l === g
+      ? 2 + (b - r) / s
+      : 4 + (r - g) / s
+    : 0;
+  return [
+    60 * h < 0 ? 60 * h + 360 : 60 * h,
+    100 * (s ? (l <= 0.5 ? s / (2 * l - s) : s / (2 - (2 * l - s))) : 0),
+    (100 * (2 * l - s)) / 2,
+  ];
+};
+
+colorsDom.addEventListener("click", (e) => {
+  if (e.target.classList == "material-symbols-outlined") {
+    console.log(e.target.parentElement.parentElement.style.backgroundColor);
+    console.log(RGBToHSL(45, 23, 11));
+
+    // e.target.parentElement.innerHTML = "";
+  }
 });
 
 changeColor();
