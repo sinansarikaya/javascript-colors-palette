@@ -329,6 +329,18 @@ footer a:hover {
     grid-template-columns: 1fr;
     grid-auto-flow: row dense;
   }
+  main #colors .palette .palette-items .colorsContainer {
+    height: 100%;
+    width: 100%;
+    grid-template-rows: 1;
+    grid-template-columns: repeat(20, auto);
+    font-size: 0.5rem;
+  }
+  main #colors .palette .palette-items .colorsContainer .vrbItems {
+    height: 100%;
+    width: 100%;
+    writing-mode: tb-rl;
+  }
 }
 @media (max-width: 660px) {
   aside.navbar {
