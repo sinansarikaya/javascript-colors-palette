@@ -340,4 +340,19 @@ colorsDom.addEventListener("click", (e) => {
   }
 });
 
+const main = document.querySelector("main");
+main.addEventListener("click", (e) => {
+  if (e.target.className == "vrbItems") {
+    // console.log(e.target.style.backgroundColor);
+    console.log(e.target.parentElement);
+    for (const child of e.target.parentElement.parentElement.children) {
+      child.style.display = "";
+    }
+    e.target.parentElement.parentElement.parentElement.style.backgroundColor =
+      e.target.style.backgroundColor;
+
+    e.target.parentElement.remove();
+  }
+});
+
 changeColor();
