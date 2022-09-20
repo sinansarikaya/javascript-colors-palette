@@ -218,30 +218,123 @@ colorList.addEventListener("click", (e) => {
   }
 });
 
+const colorVariables = (num) => {
+  let colorLight = [];
+  let colorDark = [];
+  let clrList = [];
+  let number = num;
+
+  const darkest = (n) => {
+    for (n; n >= 0; ) {
+      colorDark.push(n.toFixed());
+      n -= 5;
+    }
+    return colorDark;
+  };
+
+  const lightest = (nu) => {
+    for (nu; nu <= 100; ) {
+      colorLight.push(nu.toFixed());
+      nu += 5;
+    }
+    return colorLight;
+  };
+
+  darkest(number - 5);
+  lightest(number);
+
+  clrList = clrList.concat(colorDark, colorLight);
+  clrList = clrList.sort(function (a, b) {
+    return a - b;
+  });
+
+  return clrList.reverse();
+};
+
 const RGBToHSL = (r, g, b) => {
+  // Make r, g, and b fractions of 1
   r /= 255;
   g /= 255;
   b /= 255;
-  const l = Math.max(r, g, b);
-  const s = l - Math.min(r, g, b);
-  const h = s
-    ? l === r
-      ? (g - b) / s
-      : l === g
-      ? 2 + (b - r) / s
-      : 4 + (r - g) / s
-    : 0;
-  return [
-    60 * h < 0 ? 60 * h + 360 : 60 * h,
-    100 * (s ? (l <= 0.5 ? s / (2 * l - s) : s / (2 - (2 * l - s))) : 0),
-    (100 * (2 * l - s)) / 2,
-  ];
+
+  // Find greatest and smallest channel values
+  let cmin = Math.min(r, g, b),
+    cmax = Math.max(r, g, b),
+    delta = cmax - cmin,
+    h = 0,
+    s = 0,
+    l = 0;
+
+  // Calculate hue
+  // No difference
+  if (delta == 0) h = 0;
+  // Red is max
+  else if (cmax == r) h = ((g - b) / delta) % 6;
+  // Green is max
+  else if (cmax == g) h = (b - r) / delta + 2;
+  // Blue is max
+  else h = (r - g) / delta + 4;
+
+  h = Math.round(h * 60);
+
+  // Make negative hues positive behind 360°
+  if (h < 0) h += 360;
+
+  // Calculate lightness
+  l = (cmax + cmin) / 2;
+
+  // Calculate saturation
+  s = delta == 0 ? 0 : delta / (1 - Math.abs(2 * l - 1));
+
+  // Multiply l and s by 100
+  s = +(s * 100).toFixed(1);
+  l = +(l * 100).toFixed(1);
+
+  return [h, s, l];
 };
 
 colorsDom.addEventListener("click", (e) => {
   if (e.target.classList == "material-symbols-outlined") {
-    console.log(e.target.parentElement.parentElement.style.backgroundColor);
-    console.log(RGBToHSL(45, 23, 11));
+    let rgbCode = e.target.parentElement.parentElement.style.backgroundColor;
+    rgbCode = rgbCode
+      .replace("rgb(", "")
+      .replace(")", "")
+      .replace(" ", "")
+      .replace(" ", "")
+      .split(",");
+
+    let changedHLS = RGBToHSL(rgbCode[0], rgbCode[1], rgbCode[2]);
+
+    // console.log(changedHLS);
+
+    // e.target.parentElement.parentElement.children.style.display = "none";
+    for (const child of e.target.parentElement.children) {
+      child.style.display = "none";
+    }
+    let colorVrbContainer = document.createElement("div");
+    colorVrbContainer.setAttribute("class", "colorsContainer");
+    e.target.parentElement.appendChild(colorVrbContainer);
+
+    let hlsCode = RGBToHSL(rgbCode[0], rgbCode[1], rgbCode[2]);
+
+    for (let i = 0; i < colorVariables(changedHLS[2]).length; i++) {
+      let vrbItems = document.createElement("div");
+      vrbItems.setAttribute("class", "vrbItems");
+      colorVrbContainer.appendChild(vrbItems);
+      vrbItems.style.backgroundColor = `hsl(${hlsCode[0]}, ${hlsCode[1]}%, ${
+        colorVariables(changedHLS[2])[i]
+      }%)`;
+      vrbItems.innerText = vrbItems.style.backgroundColor;
+    }
+
+    // console.log(e.target.children);
+
+    // variableHls = hlsCode[2];
+
+    // rgbCodes.push(rgbCode);
+    // console.log(rgbCode);
+
+    // e.target.parentElement.parentElement.style.backgroundColor = `hsl(${rgbCode[0]}, ${rgbCode[1]}%, ${rgbCode[2]}%)`;
 
     // e.target.parentElement.innerHTML = "";
   }
