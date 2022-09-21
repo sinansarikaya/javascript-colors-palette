@@ -226,7 +226,7 @@ const colorVariables = (num) => {
 
   const darkest = (n) => {
     for (n; n >= 0; ) {
-      colorDark.push(n.toFixed());
+      colorDark.push(n);
       n -= 5;
     }
     return colorDark;
@@ -234,7 +234,7 @@ const colorVariables = (num) => {
 
   const lightest = (nu) => {
     for (nu; nu <= 100; ) {
-      colorLight.push(nu.toFixed());
+      colorLight.push(nu);
       nu += 5;
     }
     return colorLight;
@@ -290,12 +290,36 @@ const RGBToHSL = (r, g, b) => {
   s = +(s * 100).toFixed(1);
   l = +(l * 100).toFixed(1);
 
-  return [h, s, l];
+  return [Math.round(h), Math.round(s), Math.round(l)];
+};
+
+const RGBToHex = (r, g, b) => {
+  r = parseInt(r).toString(16);
+  g = parseInt(g).toString(16);
+  b = parseInt(b).toString(16);
+
+  if (r.length == 1) r = "0" + r;
+  if (g.length == 1) g = "0" + g;
+  if (b.length == 1) b = "0" + b;
+
+  return r + g + b;
+};
+const RGBToArray = (rgb) => {
+  rgb = rgb
+    .replace("rgb(", "")
+    .replace(")", "")
+    .replace(" ", "")
+    .replace(" ", "")
+    .split(",");
+
+  return rgb;
 };
 
 colorsDom.addEventListener("click", (e) => {
   if (e.target.classList == "material-symbols-outlined") {
+    e.target.parentElement.parentElement.style.backgroundColor;
     let rgbCode = e.target.parentElement.parentElement.style.backgroundColor;
+    console.log(rgbCode);
     rgbCode = rgbCode
       .replace("rgb(", "")
       .replace(")", "")
@@ -304,10 +328,8 @@ colorsDom.addEventListener("click", (e) => {
       .split(",");
 
     let changedHLS = RGBToHSL(rgbCode[0], rgbCode[1], rgbCode[2]);
+    console.log(changedHLS);
 
-    // console.log(changedHLS);
-
-    // e.target.parentElement.parentElement.children.style.display = "none";
     for (const child of e.target.parentElement.children) {
       child.style.display = "none";
     }
@@ -324,19 +346,22 @@ colorsDom.addEventListener("click", (e) => {
       vrbItems.style.backgroundColor = `hsl(${hlsCode[0]}, ${hlsCode[1]}%, ${
         colorVariables(changedHLS[2])[i]
       }%)`;
-      vrbItems.innerText = vrbItems.style.backgroundColor;
+
+      console.log(
+        `hsl(${hlsCode[0]}, ${hlsCode[1]}%, ${
+          colorVariables(changedHLS[2])[i]
+        }%)`
+      );
+      let vrbBg = vrbItems.style.backgroundColor
+        .replace("rgb(", "")
+        .replace(")", "")
+        .replace(" ", "")
+        .replace(" ", "")
+        .split(",");
+      // console.log(vrbItems.style.backgroundColor);
+      console.log(vrbBg[0], vrbBg[1], vrbBg[2]);
+      vrbItems.innerText = RGBToHex(vrbBg[0], vrbBg[1], vrbBg[2]);
     }
-
-    // console.log(e.target.children);
-
-    // variableHls = hlsCode[2];
-
-    // rgbCodes.push(rgbCode);
-    // console.log(rgbCode);
-
-    // e.target.parentElement.parentElement.style.backgroundColor = `hsl(${rgbCode[0]}, ${rgbCode[1]}%, ${rgbCode[2]}%)`;
-
-    // e.target.parentElement.innerHTML = "";
   }
 });
 
@@ -344,12 +369,18 @@ const main = document.querySelector("main");
 main.addEventListener("click", (e) => {
   if (e.target.className == "vrbItems") {
     // console.log(e.target.style.backgroundColor);
-    console.log(e.target.parentElement);
+    // console.log(e.target.parentElement);
     for (const child of e.target.parentElement.parentElement.children) {
       child.style.display = "";
     }
     e.target.parentElement.parentElement.parentElement.style.backgroundColor =
       e.target.style.backgroundColor;
+    rgbBgCode = RGBToArray(e.target.style.backgroundColor);
+    e.target.parentElement.parentElement.querySelector(
+      ".color-code"
+    ).innerText = RGBToHex(rgbBgCode[0], rgbBgCode[1], rgbBgCode[2]);
+
+    console.log(rgbBgCode[0], rgbBgCode[1], rgbBgCode[2]);
 
     e.target.parentElement.remove();
   }

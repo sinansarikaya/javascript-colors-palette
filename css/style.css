@@ -81,7 +81,7 @@
   border-radius: 0.5rem;
   cursor: pointer;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-  transition: background 0.5s;
+  transition: ground 0.5s;
 }
 #saveBox .saveSubmit:hover {
   background-color: var(--search-bg);
@@ -275,6 +275,7 @@ main #colors .palette .palette-items .colorsContainer .vrbItems {
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
 }
 footer {
   width: 100%;
@@ -332,7 +333,7 @@ footer a:hover {
   main #colors .palette .palette-items .colorsContainer {
     height: 100%;
     width: 100%;
-    grid-template-rows: 1;
+    grid-template-rows: auto;
     grid-template-columns: repeat(20, auto);
     font-size: 0.5rem;
   }
