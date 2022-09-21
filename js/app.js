@@ -27,6 +27,13 @@ if (getList != null) {
 } else {
   hasLocal = false;
 }
+let palettes = {};
+
+if (hasLocal) {
+  palettes = getList;
+} else {
+  localStorage.setItem("Colors Palette", JSON.stringify(palettes));
+}
 
 const alert = (type, msg) => {};
 
@@ -52,8 +59,6 @@ const filterColor = (clr) => {
   return filteredColor;
 };
 filterColor(selectedColor);
-
-console.log(filterColor(selectedColor));
 
 getItems = (hasLocal) => {
   // console.log(getList); // Object
@@ -97,7 +102,6 @@ getItems = (hasLocal) => {
       newdiv.style.backgroundColor = `#${element}`;
     });
 
-    // console.log(key, getList[key]);
     return getList;
   });
 };
@@ -126,7 +130,7 @@ document.addEventListener("keydown", (e) => {
 lock.forEach((lockEl, i) =>
   lockEl.addEventListener("click", (e) => {
     let event = e.target.classList;
-    console.log(e.target.classList);
+
     if (event.contains("fa-lock-open")) {
       event.remove("fa-lock-open");
       event.add("fa-lock");
@@ -139,7 +143,7 @@ lock.forEach((lockEl, i) =>
   })
 );
 
-copy.forEach((copyEl, i) =>
+copy.forEach((copyEl) =>
   copyEl.addEventListener("click", (e) => {
     navigator.clipboard.writeText(
       e.target.closest("div").querySelector(".color-code").innerText
@@ -160,13 +164,7 @@ closeBox.addEventListener("click", () => {
   close();
 });
 
-saveSubmit.addEventListener("click", (e) => {
-  let palettes = {};
-
-  if (hasLocal) {
-    palettes = getList;
-  }
-
+saveSubmit.addEventListener("click", () => {
   let palettesArray = [];
   colorCode.forEach((colorCodeEl) => {
     palettesArray.push(colorCodeEl.innerText);
@@ -179,7 +177,6 @@ saveSubmit.addEventListener("click", (e) => {
   pName.value = "";
   colorList.innerHTML = "";
   close();
-  e.preventDefault();
   getItems(hasLocal);
 });
 getItems(hasLocal);
@@ -208,13 +205,23 @@ listItem.forEach((item) => {
 const deleteColor = document.querySelectorAll(".deleteColor");
 
 //capturing
+//Delete And Use Colors
 colorList.addEventListener("click", (e) => {
+  // Delete Color
   if (e.target.className == "fa-solid fa-xmark deleteColor") {
     e.target.parentElement.previousElementSibling.remove();
     e.target.parentElement.remove();
     delete getList[e.target.getAttribute("data-key")];
     localStorage.setItem("Colors Palette", JSON.stringify(getList));
     getItems(hasLocal);
+  }
+
+  // Use Color
+  if (e.target.className == "list-color") {
+    let element = e.target.parentElement.children;
+    for (let i = 0; i < element.length; i++) {
+      colors[i].style.backgroundColor = element[i].style.backgroundColor;
+    }
   }
 });
 
@@ -318,17 +325,11 @@ const RGBToArray = (rgb) => {
 colorsDom.addEventListener("click", (e) => {
   if (e.target.classList == "material-symbols-outlined") {
     e.target.parentElement.parentElement.style.backgroundColor;
-    let rgbCode = e.target.parentElement.parentElement.style.backgroundColor;
-    console.log(rgbCode);
-    rgbCode = rgbCode
-      .replace("rgb(", "")
-      .replace(")", "")
-      .replace(" ", "")
-      .replace(" ", "")
-      .split(",");
+    let rgbCode = RGBToArray(
+      e.target.parentElement.parentElement.style.backgroundColor
+    );
 
     let changedHLS = RGBToHSL(rgbCode[0], rgbCode[1], rgbCode[2]);
-    console.log(changedHLS);
 
     for (const child of e.target.parentElement.children) {
       child.style.display = "none";
@@ -347,19 +348,10 @@ colorsDom.addEventListener("click", (e) => {
         colorVariables(changedHLS[2])[i]
       }%)`;
 
-      console.log(
-        `hsl(${hlsCode[0]}, ${hlsCode[1]}%, ${
-          colorVariables(changedHLS[2])[i]
-        }%)`
-      );
-      let vrbBg = vrbItems.style.backgroundColor
-        .replace("rgb(", "")
-        .replace(")", "")
-        .replace(" ", "")
-        .replace(" ", "")
-        .split(",");
+      let vrbBg = RGBToArray(vrbItems.style.backgroundColor);
+
       // console.log(vrbItems.style.backgroundColor);
-      console.log(vrbBg[0], vrbBg[1], vrbBg[2]);
+
       vrbItems.innerText = RGBToHex(vrbBg[0], vrbBg[1], vrbBg[2]);
     }
   }
@@ -379,8 +371,6 @@ main.addEventListener("click", (e) => {
     e.target.parentElement.parentElement.querySelector(
       ".color-code"
     ).innerText = RGBToHex(rgbBgCode[0], rgbBgCode[1], rgbBgCode[2]);
-
-    console.log(rgbBgCode[0], rgbBgCode[1], rgbBgCode[2]);
 
     e.target.parentElement.remove();
   }
