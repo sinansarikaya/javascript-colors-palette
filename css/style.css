@@ -209,6 +209,7 @@ aside.navbar .colorList .color-group .list-item {
 aside.navbar .colorList .color-group .fa-xmark {
   cursor: pointer;
   font-size: 2rem;
+  padding: 0.5rem;
 }
 aside.navbar .colorList .list-item .list-color {
   width: 50px;
