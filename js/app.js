@@ -237,17 +237,20 @@ colorContainer.addEventListener("click", (e) => {
     });
 
     typeBoxSave.addEventListener("click", () => {
-      let changedBg = RGBToArray(getBgColor);
+      colorPalets.forEach((color) => {
+        let changedBg = RGBToArray(color.style.backgroundColor);
+        let palettesText = color.querySelector(".color-code");
 
-      if (typeBoxColorTypes.value == "RGB") {
-        e.target.innerText = getBgColor;
-      } else if (typeBoxColorTypes.value == "HSL") {
-        changedBg = RGBToHSL(changedBg[0], changedBg[1], changedBg[2]);
-        e.target.innerText = `hsl(${changedBg[0]}, ${changedBg[1]}%, ${changedBg[2]}%)`;
-      } else if (typeBoxColorTypes.value == "Hex") {
-        changedBg = RGBToHex(changedBg[0], changedBg[1], changedBg[2]);
-        e.target.innerText = changedBg;
-      }
+        if (typeBoxColorTypes.value == "RGB") {
+          palettesText.innerText = color.style.backgroundColor;
+        } else if (typeBoxColorTypes.value == "HSL") {
+          changedBg = RGBToHSL(changedBg[0], changedBg[1], changedBg[2]);
+          palettesText.innerText = `hsl(${changedBg[0]}, ${changedBg[1]}%, ${changedBg[2]}%)`;
+        } else if (typeBoxColorTypes.value == "Hex") {
+          changedBg = RGBToHex(changedBg[0], changedBg[1], changedBg[2]);
+          palettesText.innerText = changedBg;
+        }
+      });
     });
   }
 });
