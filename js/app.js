@@ -16,6 +16,10 @@ const saveBtn = document.querySelector(".save");
 const saveBox = document.querySelector("#saveBox");
 const saveBoxClose = document.querySelector("#saveBox .fa-xmark");
 const saveSubmit = document.querySelector(".saveSubmit");
+const typeBox = document.querySelector("#typeBox");
+const typeBoxClose = document.querySelector("#typeBox .fa-xmark");
+const typeBoxSave = document.querySelector("#typeBox .saveType");
+const typeBoxColorTypes = document.querySelector("#colorTypes");
 // Save Doms End
 
 const main = document.querySelector("main");
@@ -84,25 +88,28 @@ hamburger.addEventListener("click", () => {
 // ------- Save Box Events -------
 // Open Save Box
 saveBtn.addEventListener("click", () => {
+  if (boxOpen) {
+    return;
+  }
   saveBox.classList.add("active");
   boxOpen = true;
 });
 
 // Close Event
-const close = () => {
-  saveBox.classList.remove("active");
+const close = (element) => {
+  element.classList.remove("active");
   boxOpen = false;
 };
 
 // Close Save Box
 saveBoxClose.addEventListener("click", () => {
-  close();
+  close(saveBox);
 });
 
 // Escape Close Box Event
 document.addEventListener("keydown", (e) => {
   if (e.code == "Escape" && boxOpen) {
-    close();
+    close(saveBox);
   }
 });
 
@@ -123,7 +130,6 @@ saveSubmit.addEventListener("click", (e) => {
   localStorage.setItem("Colors Palette", JSON.stringify(palettes));
   close();
 
-  //! ALERT TEST ---->>
   alert("Success!", "Color added successfully!");
 });
 // ------- Save Box Events End -------
@@ -214,8 +220,35 @@ colorContainer.addEventListener("click", (e) => {
     navigator.clipboard.writeText(
       e.target.parentElement.querySelector(".color-code").innerText
     );
-    //! ALERT TEST ---->>
     alert("Success!", "Color copied successfully.");
+  }
+
+  // Color Code Type Change Event
+  if (e.target.classList == "color-code") {
+    if (boxOpen) {
+      return;
+    }
+    boxOpen = true;
+    typeBox.classList.add("active");
+    let getBgColor = e.target.parentElement.parentElement.style.backgroundColor;
+
+    typeBoxClose.addEventListener("click", () => {
+      close(typeBox);
+    });
+
+    typeBoxSave.addEventListener("click", () => {
+      let changedBg = RGBToArray(getBgColor);
+
+      if (typeBoxColorTypes.value == "RGB") {
+        e.target.innerText = getBgColor;
+      } else if (typeBoxColorTypes.value == "HSL") {
+        changedBg = RGBToHSL(changedBg[0], changedBg[1], changedBg[2]);
+        e.target.innerText = `hsl(${changedBg[0]}, ${changedBg[1]}%, ${changedBg[2]}%)`;
+      } else if (typeBoxColorTypes.value == "Hex") {
+        changedBg = RGBToHex(changedBg[0], changedBg[1], changedBg[2]);
+        e.target.innerText = changedBg;
+      }
+    });
   }
 });
 // ------- Color Container Events End -------
@@ -246,7 +279,6 @@ colorList.addEventListener("click", (e) => {
     e.target.parentElement.remove();
     delete getLocalColors[e.target.getAttribute("data-key")];
     localStorage.setItem("Colors Palette", JSON.stringify(getLocalColors));
-    //! ALERT TEST ---->>
     alert("Warning!", "Color deleted!");
   }
 
