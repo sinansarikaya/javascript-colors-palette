@@ -1,132 +1,163 @@
+import {
+  alert,
+  RGBToHex,
+  RGBToHSL,
+  RGBToArray,
+  colorVariables,
+  createElement,
+} from "./functions.js";
+// Menu Doms
 const navbar = document.querySelector(".navbar");
 const hamburger = document.querySelector(".hamburger");
-const colorsDom = document.querySelector("#colors");
-const colors = document.querySelectorAll("#colors .palette");
-const colorCode = document.querySelectorAll(".color-code");
-const lock = document.querySelectorAll(".lock");
-const copy = document.querySelectorAll(".fa-copy");
-const save = document.querySelector(".save");
-const saveBox = document.querySelector("#saveBox");
-const paletteName = document.querySelector("#palette-name");
-const saveSubmit = document.querySelector(".saveSubmit");
-const pName = document.querySelector(".pName");
-const colorList = document.querySelector(".colorList");
-const closeBox = document.querySelector(".fa-xmark");
-const search = document.querySelector(".search");
-const colorX = document.querySelector(".colorList .fa-xmark");
+// Menu Doms End
 
-let getList = localStorage.getItem("Colors Palette");
-getList = JSON.parse(getList);
-//let colorKeys = String(Object.keys(getList));
+// Save Doms
+const saveBtn = document.querySelector(".save");
+const saveBox = document.querySelector("#saveBox");
+const saveBoxClose = document.querySelector("#saveBox .fa-xmark");
+const saveSubmit = document.querySelector(".saveSubmit");
+// Save Doms End
+
+const main = document.querySelector("main");
+const colorContainer = document.querySelector("#colors");
+const colorPalets = document.querySelectorAll("#colors .palette");
+const colorCode = document.querySelectorAll(".color-code");
+const logo = document.querySelector(".logo");
+const lock = document.querySelectorAll(".lock");
+const colorList = document.querySelector(".colorList");
+const search = document.querySelector(".search");
+
+// Get items from localStorage
+let getLocalColors = localStorage.getItem("Colors Palette");
+getLocalColors = JSON.parse(getLocalColors);
+let palettes = {};
 
 let isLocked = [false, false, false, false, false];
 let boxOpen = false;
-let hasLocal = false;
-if (getList != null) {
-  hasLocal = true;
-} else {
-  hasLocal = false;
-}
-let palettes = {};
-
-if (hasLocal) {
-  palettes = getList;
-} else {
-  localStorage.setItem("Colors Palette", JSON.stringify(palettes));
-}
-
-const alert = (type, msg) => {};
 
 let selectedColor = search.value;
 
 search.addEventListener("input", () => {
-  selectedColor = search.value;
-  filterColor(selectedColor);
-  getItems(hasLocal);
+  if (!getLocalColors) {
+    selectedColor = search.value;
+    console.log(selectedColor);
+    filterColor(selectedColor);
+    getColors();
+  }
 });
 
 const filterColor = (clr) => {
-  if (!hasLocal) {
-    return;
-  }
   colorList.innerHTML = "";
-  const filteredColor = Object.keys(getList)
+  const filteredColor = Object.keys(getLocalColors)
     .filter((key) => clr.includes(key))
     .reduce((obj, key) => {
-      obj[key] = getList[key];
+      obj[key] = getLocalColors[key];
       return obj;
     }, {});
   return filteredColor;
 };
-filterColor(selectedColor);
 
-getItems = (hasLocal) => {
-  // console.log(getList); // Object
-  // console.log(colorKeys); // Keys
-  // console.log(getList[colorKeys]); //Values
-
-  if (!hasLocal) {
-    return;
-  }
+const getColors = () => {
   if (!search.value) {
-    selectedColor = Object.keys(getList);
+    selectedColor = Object.keys(getLocalColors);
   }
-
-  // getList = localStorage.getItem("Colors Palette");
-  // getList = JSON.parse(getList);
-
   Object.keys(filterColor(selectedColor)).forEach((key) => {
-    const newH5 = document.createElement("h5");
-    const colorG = document.createElement("div");
-    const closeI = document.createElement("i");
-    const newLi = document.createElement("li");
-
-    newH5.classList.add("list-title");
-    colorG.classList.add("color-group");
-    closeI.classList.add("fa-solid", "fa-xmark", "deleteColor");
-    closeI.setAttribute("data-key", key);
-    newLi.classList.add("list-item");
-    newLi.setAttribute("data-key", key);
-
-    colorList.appendChild(newH5);
-    colorList.appendChild(colorG);
-    colorG.appendChild(closeI);
-    colorG.appendChild(newLi);
-
-    newH5.innerText = key;
-
-    getList[key].forEach((element) => {
-      const newdiv = document.createElement("div");
-      newdiv.classList.add("list-color");
-      newLi.appendChild(newdiv);
-      newdiv.style.backgroundColor = `#${element}`;
-    });
-
-    return getList;
+    createElement(key, getLocalColors[key]);
   });
 };
 
+// Check if localStorage has items or not
+if (getLocalColors == null) {
+  localStorage.setItem("Colors Palette", JSON.stringify(palettes));
+} else {
+  palettes = getLocalColors;
+  getColors();
+}
+
+// ------- Menu Events -------
 hamburger.addEventListener("click", () => {
   hamburger.classList.toggle("active");
   navbar.classList.toggle("active");
 });
+// ------- Menu Events End -------
 
-const changeColor = () => {
-  for (let i = 0; i < colors.length; i++) {
+// ------- Save Box Events -------
+// Open Save Box
+saveBtn.addEventListener("click", () => {
+  saveBox.classList.add("active");
+  boxOpen = true;
+});
+
+// Close Event
+const close = () => {
+  saveBox.classList.remove("active");
+  boxOpen = false;
+};
+
+// Close Save Box
+saveBoxClose.addEventListener("click", () => {
+  close();
+});
+
+// Escape Close Box Event
+document.addEventListener("keydown", (e) => {
+  if (e.code == "Escape" && boxOpen) {
+    close();
+  }
+});
+
+// Save Color Event
+saveSubmit.addEventListener("click", (e) => {
+  let colors = [];
+
+  colorCode.forEach((colorCodeEl) => {
+    colors.push(colorCodeEl.innerText);
+  });
+
+  let paletteName = e.target.parentElement.querySelector(".pName").value;
+  e.target.parentElement.querySelector(".pName").value = "";
+
+  palettes[paletteName] = colors;
+  createElement(paletteName, colors);
+
+  localStorage.setItem("Colors Palette", JSON.stringify(palettes));
+  close();
+
+  //! ALERT TEST ---->>
+  alert("Success!", "Color added successfully.");
+});
+// ------- Save Box Events End -------
+
+// ------- Random Colors -------
+// Generate Random Colors
+const generateRandomColors = () => {
+  for (let i = 0; i < colorPalets.length; i++) {
     const randomColor = Math.floor(Math.random() * 16777215).toString(16);
-    if (isLocked[i] === false) {
-      colors[i].style.backgroundColor = `#${randomColor}`;
+    if (isLocked[i] === false && !boxOpen) {
+      colorPalets[i].style.backgroundColor = `#${randomColor}`;
       colorCode[i].innerText = `${randomColor}`;
     }
   }
 };
 
+// Logo Color Event
+logo.addEventListener("click", () => {
+  generateRandomColors();
+});
+
+// Space Color Event
 document.addEventListener("keydown", (e) => {
-  if (e.code === "Space" && !boxOpen) {
-    changeColor();
+  if (e.code == "Space") {
+    generateRandomColors();
   }
 });
 
+//! Change Color Button ---->>
+
+generateRandomColors();
+// ------- Random Colors End -------
+
+// ------- Lock Events -------
 lock.forEach((lockEl, i) =>
   lockEl.addEventListener("click", (e) => {
     let event = e.target.classList;
@@ -142,187 +173,11 @@ lock.forEach((lockEl, i) =>
     }
   })
 );
+// ------- Lock Event End -------
 
-copy.forEach((copyEl) =>
-  copyEl.addEventListener("click", (e) => {
-    navigator.clipboard.writeText(
-      e.target.closest("div").querySelector(".color-code").innerText
-    );
-  })
-);
-
-save.addEventListener("click", () => {
-  saveBox.classList.add("active");
-  boxOpen = true;
-});
-
-const close = () => {
-  saveBox.classList.remove("active");
-  boxOpen = false;
-};
-closeBox.addEventListener("click", () => {
-  close();
-});
-
-saveSubmit.addEventListener("click", () => {
-  let palettesArray = [];
-  colorCode.forEach((colorCodeEl) => {
-    palettesArray.push(colorCodeEl.innerText);
-  });
-  palettes[paletteName.value] = palettesArray;
-  localStorage.setItem("Colors Palette", JSON.stringify(palettes));
-
-  hasLocal = true;
-
-  pName.value = "";
-  colorList.innerHTML = "";
-  close();
-  getItems(hasLocal);
-});
-getItems(hasLocal);
-
-const listItem = document.querySelectorAll(".list-item");
-
-listItem.forEach((item) => {
-  item.addEventListener("click", (e) => {
-    const colorGet = Object.keys(getList)
-      .filter((key) => key.includes(e.currentTarget.dataset.key))
-      .reduce((obj, key) => {
-        return Object.assign(obj, {
-          [key]: getList[key],
-        });
-      }, {});
-
-    Object.keys(colorGet).forEach((key) => {
-      colorGet[key].forEach((element, i) => {
-        colors[i].style.backgroundColor = `#${element}`;
-        colorCode[i].innerText = `${element}`;
-      });
-    });
-  });
-});
-
-const deleteColor = document.querySelectorAll(".deleteColor");
-
-//capturing
-//Delete And Use Colors
-colorList.addEventListener("click", (e) => {
-  // Delete Color
-  if (e.target.className == "fa-solid fa-xmark deleteColor") {
-    e.target.parentElement.previousElementSibling.remove();
-    e.target.parentElement.remove();
-    delete getList[e.target.getAttribute("data-key")];
-    localStorage.setItem("Colors Palette", JSON.stringify(getList));
-    getItems(hasLocal);
-  }
-
-  // Use Color
-  if (e.target.className == "list-color") {
-    let element = e.target.parentElement.children;
-    for (let i = 0; i < element.length; i++) {
-      colors[i].style.backgroundColor = element[i].style.backgroundColor;
-    }
-  }
-});
-
-const colorVariables = (num) => {
-  let colorLight = [];
-  let colorDark = [];
-  let clrList = [];
-  let number = num;
-
-  const darkest = (n) => {
-    for (n; n >= 0; ) {
-      colorDark.push(n);
-      n -= 5;
-    }
-    return colorDark;
-  };
-
-  const lightest = (nu) => {
-    for (nu; nu <= 100; ) {
-      colorLight.push(nu);
-      nu += 5;
-    }
-    return colorLight;
-  };
-
-  darkest(number - 5);
-  lightest(number);
-
-  clrList = clrList.concat(colorDark, colorLight);
-  clrList = clrList.sort(function (a, b) {
-    return a - b;
-  });
-
-  return clrList.reverse();
-};
-
-const RGBToHSL = (r, g, b) => {
-  // Make r, g, and b fractions of 1
-  r /= 255;
-  g /= 255;
-  b /= 255;
-
-  // Find greatest and smallest channel values
-  let cmin = Math.min(r, g, b),
-    cmax = Math.max(r, g, b),
-    delta = cmax - cmin,
-    h = 0,
-    s = 0,
-    l = 0;
-
-  // Calculate hue
-  // No difference
-  if (delta == 0) h = 0;
-  // Red is max
-  else if (cmax == r) h = ((g - b) / delta) % 6;
-  // Green is max
-  else if (cmax == g) h = (b - r) / delta + 2;
-  // Blue is max
-  else h = (r - g) / delta + 4;
-
-  h = Math.round(h * 60);
-
-  // Make negative hues positive behind 360°
-  if (h < 0) h += 360;
-
-  // Calculate lightness
-  l = (cmax + cmin) / 2;
-
-  // Calculate saturation
-  s = delta == 0 ? 0 : delta / (1 - Math.abs(2 * l - 1));
-
-  // Multiply l and s by 100
-  s = +(s * 100).toFixed(1);
-  l = +(l * 100).toFixed(1);
-
-  return [Math.round(h), Math.round(s), Math.round(l)];
-};
-
-const RGBToHex = (r, g, b) => {
-  r = parseInt(r).toString(16);
-  g = parseInt(g).toString(16);
-  b = parseInt(b).toString(16);
-
-  if (r.length == 1) r = "0" + r;
-  if (g.length == 1) g = "0" + g;
-  if (b.length == 1) b = "0" + b;
-
-  return r + g + b;
-};
-const RGBToArray = (rgb) => {
-  rgb = rgb
-    .replace("rgb(", "")
-    .replace(")", "")
-    .replace(" ", "")
-    .replace(" ", "")
-    .split(",");
-
-  return rgb;
-};
-
-colorsDom.addEventListener("click", (e) => {
+// ------- Color Container Events -------
+colorContainer.addEventListener("click", (e) => {
+  // Color Variable Event
   if (e.target.classList == "material-symbols-outlined") {
     e.target.parentElement.parentElement.style.backgroundColor;
     let rgbCode = RGBToArray(
@@ -350,24 +205,30 @@ colorsDom.addEventListener("click", (e) => {
 
       let vrbBg = RGBToArray(vrbItems.style.backgroundColor);
 
-      // console.log(vrbItems.style.backgroundColor);
-
       vrbItems.innerText = RGBToHex(vrbBg[0], vrbBg[1], vrbBg[2]);
     }
   }
-});
 
-const main = document.querySelector("main");
+  // Color Copy Event
+  if (e.target.classList == "fa-regular fa-copy") {
+    navigator.clipboard.writeText(
+      e.target.parentElement.querySelector(".color-code").innerText
+    );
+    //! ALERT TEST ---->>
+    alert("Success!", "Color copied successfully.");
+  }
+});
+// ------- Color Container Events End -------
+
+// ------- Color Variables Click Events -------
 main.addEventListener("click", (e) => {
   if (e.target.className == "vrbItems") {
-    // console.log(e.target.style.backgroundColor);
-    // console.log(e.target.parentElement);
     for (const child of e.target.parentElement.parentElement.children) {
       child.style.display = "";
     }
     e.target.parentElement.parentElement.parentElement.style.backgroundColor =
       e.target.style.backgroundColor;
-    rgbBgCode = RGBToArray(e.target.style.backgroundColor);
+    let rgbBgCode = RGBToArray(e.target.style.backgroundColor);
     e.target.parentElement.parentElement.querySelector(
       ".color-code"
     ).innerText = RGBToHex(rgbBgCode[0], rgbBgCode[1], rgbBgCode[2]);
@@ -375,5 +236,26 @@ main.addEventListener("click", (e) => {
     e.target.parentElement.remove();
   }
 });
+// ------- Color Variables Click Events End -------
 
-changeColor();
+// Color list events from navbar
+colorList.addEventListener("click", (e) => {
+  // Delete Color
+  if (e.target.className == "fa-solid fa-xmark deleteColor") {
+    e.target.parentElement.previousElementSibling.remove();
+    e.target.parentElement.remove();
+    delete getLocalColors[e.target.getAttribute("data-key")];
+    localStorage.setItem("Colors Palette", JSON.stringify(getLocalColors));
+    //! ALERT TEST ---->>
+    alert("Success!", "Color deleted successfully.");
+  }
+
+  // Use Color
+  if (e.target.className == "list-color") {
+    let element = e.target.parentElement.children;
+
+    for (let i = 0; i < element.length; i++) {
+      colorPalets[i].style.backgroundColor = element[i].style.backgroundColor;
+    }
+  }
+});
