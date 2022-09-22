@@ -19,6 +19,35 @@
   justify-content: space-between;
   align-items: center;
 }
+#alert {
+  position: absolute;
+  width: 50%;
+  max-width: 500px;
+  top: -150%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  z-index: 10;
+  font-size: 1.3rem;
+  transition: top 0.5s ease-in-out;
+  color: hsl(155, 48%, 90%);
+}
+#alert.success,
+#alert.warning,
+#alert.error {
+  top: 0;
+}
+#alert.error {
+  background-color: #f46677;
+}
+#alert.success {
+  background-color: #3eb281;
+}
+#alert.warning {
+  background-color: #fbba2f;
+}
 #saveBox {
   background-color: var(--primary);
   color: var(--secondary);
@@ -203,7 +232,7 @@ aside.navbar .colorList .color-group .list-item {
   margin-top: 0.3rem;
   border-radius: 1rem;
   overflow: hidden;
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  box-shadow: hsla(0, 0%, 0%, 0.24) 0px 3px 8px;
   cursor: pointer;
 }
 aside.navbar .colorList .color-group .fa-xmark {

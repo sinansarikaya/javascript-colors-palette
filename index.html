@@ -9,7 +9,12 @@
       content="Responsive colors palette app system made using JavaScript"
     />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/x-icon" href="./img/favicon.ico" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="./img/favicon-32x32.png"
+    />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
@@ -29,6 +34,10 @@
   </head>
   <body>
     <div id="container">
+      <div id="alert">
+        <b class="type">Error</b>
+        <p class="description">Color copied successfully</p>
+      </div>
       <div id="saveBox">
         <i class="fa-solid fa-xmark"></i>
         <label for="palette-name" class="palette-title">Palette Name</label>

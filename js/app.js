@@ -124,7 +124,7 @@ saveSubmit.addEventListener("click", (e) => {
   close();
 
   //! ALERT TEST ---->>
-  alert("Success!", "Color added successfully.");
+  alert("Success!", "Color added successfully!");
 });
 // ------- Save Box Events End -------
 
@@ -247,7 +247,7 @@ colorList.addEventListener("click", (e) => {
     delete getLocalColors[e.target.getAttribute("data-key")];
     localStorage.setItem("Colors Palette", JSON.stringify(getLocalColors));
     //! ALERT TEST ---->>
-    alert("Success!", "Color deleted successfully.");
+    alert("Warning!", "Color deleted!");
   }
 
   // Use Color

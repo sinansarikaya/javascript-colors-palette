@@ -1,7 +1,19 @@
 const colorList = document.querySelector(".colorList");
+const alertDom = document.querySelector("#alert");
 // Alert
 export const alert = (type, msg) => {
-  console.log(type, msg);
+  if (type == "Error!") {
+    alertDom.classList.add("error");
+  } else if (type == "Success!") {
+    alertDom.classList.add("success");
+  } else if (type == "Warning!") {
+    alertDom.classList.add("warning");
+  }
+
+  alertDom.querySelector(".type").innerText = type;
+  alertDom.querySelector(".description").innerText = msg;
+
+  setTimeout(() => (alertDom.className = ""), 3000);
 };
 
 // Rgb to Array Converter
