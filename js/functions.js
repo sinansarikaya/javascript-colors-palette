@@ -9,11 +9,11 @@ export const alert = (type, msg) => {
   } else if (type == "Warning!") {
     alertDom.classList.add("warning");
   }
-
+  alertDom.style.top = "0";
   alertDom.querySelector(".type").innerText = type;
   alertDom.querySelector(".description").innerText = msg;
 
-  setTimeout(() => (alertDom.className = ""), 3000);
+  setTimeout(() => (alertDom.style.top = "-150%"), 2000);
 };
 
 // Rgb to Array Converter

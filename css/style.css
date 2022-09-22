@@ -4,6 +4,12 @@
   --secondary-hover: hsl(215, 6%, 40%);
   --search-bg: hsl(197, 24%, 90%);
   --search-color: hsl(215, 6%, 60%);
+  --red: hsl(0, 84%, 64%);
+  --dark-blue: hsl(210, 32%, 28%);
+  --dark-blue-soft: hsl(210, 32%, 40%);
+  --dark: hsl(216, 18%, 16%);
+  --grey: hsl(0, 0%, 87%);
+  --grey-soft: hsl(0, 0%, 95%);
 }
 * {
   padding: 0;
@@ -34,11 +40,6 @@
   transition: top 0.5s ease-in-out;
   color: hsl(155, 48%, 90%);
 }
-#alert.success,
-#alert.warning,
-#alert.error {
-  top: 0;
-}
 #alert.error {
   background-color: #f46677;
 }
@@ -48,8 +49,13 @@
 #alert.warning {
   background-color: #fbba2f;
 }
+#typeBox,
 #saveBox {
-  background-color: var(--primary);
+  background: rgba(255, 255, 255, 0.6);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(9px);
+  -webkit-backdrop-filter: blur(9px);
+  border: 1px solid rgba(255, 255, 255, 0.44);
   color: var(--secondary);
   display: flex;
   flex-direction: column;
@@ -64,56 +70,81 @@
   transform: translate(-50%, -50%);
   gap: 1.2rem;
   padding: 2rem 1rem;
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-  border: 2ps solid var(--secondary);
   border-radius: 1rem;
   visibility: hidden;
   opacity: 0;
   transition: visibility 0s, opacity 0.5s linear;
 }
+#typeBox.active,
 #saveBox.active {
   visibility: visible;
   opacity: 1;
 }
+#typeBox .fa-xmark,
 #saveBox .fa-xmark {
   margin-left: auto;
   margin-right: 1rem;
   font-size: 1rem;
   cursor: pointer;
   transition: color 0.5s;
+  color: var(--dark-blue);
+  padding: 0.5rem;
 }
+#typeBox .fa-xmark,
 #saveBox .fa-xmark:hover {
-  color: var(--secondary-hover);
+  color: var(--dark-blue-soft);
 }
+#typeBox .palette-title,
 #saveBox .palette-title {
   font-size: 1.2rem;
+  color: var(--dark-blue-soft);
 }
+#colorTypes,
 #palette-name {
   padding: 0.7rem 1rem;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-  background-color: var(--search-bg);
+  background-color: var(--grey-soft);
   color: var(--search-color);
-  border: 1px solid var(--secondary);
+  border: 1px solid var(--dark-blue-soft);
   outline: none;
   border-radius: 0.5rem;
   width: 100%;
 }
+#colorTypes {
+  cursor: pointer;
+  appearance: none;
+}
+.selectBox {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+.selectBox .fa-chevron-down {
+  position: absolute;
+  right: 1rem;
+  cursor: pointer;
+}
 #palette-name::placeholder {
   color: var(--search-color);
 }
+#typeBox .saveType,
 #saveBox .saveSubmit {
   width: 100%;
   padding: 0.5rem 1rem;
   font-size: 1rem;
-  border: 1px solid var(--secondary);
-  color: var(--secondary);
+  background-color: var(--dark-blue);
+  color: var(--grey);
+  border: 1px solid var(--grey);
   border-radius: 0.5rem;
   cursor: pointer;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-  transition: ground 0.5s;
+  transition: background 0.5s;
 }
+#typeBox .saveType:hover,
 #saveBox .saveSubmit:hover {
-  background-color: var(--search-bg);
+  background-color: var(--dark-blue-soft);
 }
 header {
   width: 100%;
@@ -282,18 +313,31 @@ main #colors .palette .palette-items {
 main #colors .palette .palette-items span,
 main #colors .palette .palette-items i {
   cursor: pointer;
-  transition: color 0.5s;
-}
-main #colors .palette .palette-items span:hover,
-main #colors .palette .palette-items i:hover {
-  color: hsl(0, 0%, 75%);
+  padding: 0.8rem;
+  border-radius: 0.7rem;
+  border: 1px solid rgba(0, 0, 0, 0);
+  transition: all 0.5s ease-in-out;
 }
 main #colors .palette .palette-items .fa-copy {
   font-size: 1.2rem;
 }
 main #colors .palette .palette-items .color-code {
-  font-size: 1.3rem;
+  font-size: 1.5rem;
   text-transform: uppercase;
+  cursor: pointer;
+  padding: 0.8rem;
+  border-radius: 0.7rem;
+  border: 1px solid rgba(0, 0, 0, 0);
+  transition: all 0.5s ease-in-out;
+}
+main #colors .palette .palette-items span:hover,
+main #colors .palette .palette-items i:hover,
+main #colors .palette .palette-items .color-code:hover {
+  background: rgba(255, 255, 255, 0.35);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(8.1px);
+  -webkit-backdrop-filter: blur(8.1px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
 }
 main #colors .palette .palette-items .colorsContainer {
   width: 100%;
