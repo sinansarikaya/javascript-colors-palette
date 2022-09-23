@@ -5,6 +5,10 @@ import {
   RGBToArray,
   colorVariables,
   createElement,
+  generateDarkColorHsl,
+  generateLightColorHsl,
+  HSLToHex,
+  HSLToArray,
 } from "./functions.js";
 // Menu Doms
 const navbar = document.querySelector(".navbar");
@@ -118,7 +122,11 @@ saveSubmit.addEventListener("click", (e) => {
   let colors = [];
 
   colorCode.forEach((colorCodeEl) => {
-    colors.push(colorCodeEl.innerText);
+    let convertedRgb =
+      colorCodeEl.parentElement.parentElement.style.backgroundColor;
+    convertedRgb = RGBToArray(convertedRgb);
+    convertedRgb = RGBToHex(convertedRgb[0], convertedRgb[1], convertedRgb[2]);
+    colors.push(convertedRgb);
   });
 
   let paletteName = e.target.parentElement.querySelector(".pName").value;
@@ -128,7 +136,7 @@ saveSubmit.addEventListener("click", (e) => {
   createElement(paletteName, colors);
 
   localStorage.setItem("Colors Palette", JSON.stringify(palettes));
-  close();
+  close(saveBox);
 
   alert("Success!", "Color added successfully!");
 });
@@ -138,10 +146,28 @@ saveSubmit.addEventListener("click", (e) => {
 // Generate Random Colors
 const generateRandomColors = () => {
   for (let i = 0; i < colorPalets.length; i++) {
-    const randomColor = Math.floor(Math.random() * 16777215).toString(16);
-    if (isLocked[i] === false && !boxOpen) {
-      colorPalets[i].style.backgroundColor = `#${randomColor}`;
-      colorCode[i].innerText = `${randomColor}`;
+    const randomDarkColor = generateDarkColorHsl();
+    const randomLightColor = generateLightColorHsl();
+
+    let convertedHslDark = HSLToHex(
+      HSLToArray(randomDarkColor)[0],
+      HSLToArray(randomDarkColor)[1],
+      HSLToArray(randomDarkColor)[2]
+    );
+
+    let convertedHslLight = HSLToHex(
+      HSLToArray(randomLightColor)[0],
+      HSLToArray(randomLightColor)[1],
+      HSLToArray(randomLightColor)[2]
+    );
+
+    if (isLocked[i] === false && !boxOpen && i <= 2) {
+      colorPalets[i].style.backgroundColor = `${randomDarkColor}`;
+      colorCode[i].innerText = `${convertedHslDark}`;
+    }
+    if (isLocked[i] === false && !boxOpen && i >= 2) {
+      colorPalets[i].style.backgroundColor = `${randomLightColor}`;
+      colorCode[i].innerText = `${convertedHslLight}`;
     }
   }
 };
