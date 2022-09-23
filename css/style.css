@@ -26,10 +26,8 @@
   align-items: center;
 }
 #container .alert-container {
-  width: 50%;
+  width: 600px;
   height: 70px;
-  max-width: 500px;
-  min-width: 300px;
   position: absolute;
   z-index: 200;
   top: 10%;
@@ -440,11 +438,19 @@ footer a:hover {
   aside.navbar {
     width: 60%;
   }
+  #container .alert-container {
+    width: 290px;
+  }
+  #alert {
+    font-size: 1rem;
+    padding: 1rem 0.5rem;
+  }
 }
 @media (max-width: 480px) {
   aside.navbar {
     width: 80%;
   }
+  #typeBox,
   #saveBox {
     width: 90%;
   }
@@ -458,6 +464,9 @@ footer a:hover {
   }
 }
 @media (max-width: 295px) {
+  #container .alert-container {
+    width: 100%;
+  }
   aside.navbar .colorList {
     display: flex;
     flex-direction: column;
