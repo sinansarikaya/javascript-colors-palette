@@ -17,6 +17,50 @@
   box-sizing: border-box;
   font-family: "Ubuntu", sans-serif;
 }
+
+.how-works {
+  position: absolute;
+  background: rgba(0, 0, 0, 70%);
+  z-index: 1000;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  color: hsl(0, 0%, 87%);
+  text-shadow: 2px 2px 2px hsla(0, 0%, 0%, 0.5);
+  font-size: 2rem;
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s, opacity 0.5s linear;
+}
+.how-works.active {
+  visibility: visible;
+  opacity: 1;
+}
+
+.how-works .fa-xmark {
+  margin: 2rem 4rem auto auto;
+  cursor: pointer;
+  padding: 1rem;
+}
+.how-works .content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  font-size: 2rem;
+  margin-bottom: auto;
+  width: 50%;
+  min-width: 500px;
+  line-height: 200%;
+}
+.how-works .content img {
+  filter: invert(99%) sepia(1%) saturate(124%) hue-rotate(255deg)
+    brightness(122%) contrast(90%) drop-shadow(2px 2px 2px hsla(0, 0%, 0%, 0.5));
+  width: 170px;
+}
 #container {
   width: 100%;
   height: 100vh;
@@ -293,11 +337,16 @@ aside.navbar .social {
   display: flex;
   gap: 0.7rem;
 }
+aside.navbar .social .fa-circle-question {
+  cursor: pointer;
+}
+aside.navbar .social .fa-circle-question,
 aside.navbar .social a {
   color: var(--secondary);
   font-size: 1.5rem;
   transition: color 0.5s;
 }
+aside.navbar .social .fa-circle-question:hover,
 aside.navbar .social a:hover {
   color: var(--secondary-hover);
 }
@@ -435,6 +484,17 @@ footer a:hover {
   }
 }
 @media (max-width: 590px) {
+  .how-works {
+    padding: 0 2rem;
+  }
+  .how-works .content {
+    width: 85%;
+    min-width: 85%;
+    font-size: 1.5rem;
+  }
+  .how-works .content img {
+    width: 100px;
+  }
   aside.navbar {
     width: 60%;
   }
