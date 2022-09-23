@@ -8,7 +8,7 @@ import {
   generateDarkColorHsl,
   generateLightColorHsl,
   HSLToHex,
-  HSLToArray,
+  HSLtoObject,
 } from "./functions.js";
 // Menu Doms
 const navbar = document.querySelector(".navbar");
@@ -146,39 +146,31 @@ saveSubmit.addEventListener("click", (e) => {
 // Generate Random Colors
 const generateRandomColors = () => {
   for (let i = 0; i < colorPalets.length; i++) {
-    const randomDarkColor = generateDarkColorHsl();
-    const randomLightColor = generateLightColorHsl();
-
-    console.log(typeof randomLightColor);
-    console.log(randomLightColor);
-    let test = "hsl(0, 0%, 100%)";
-    // hsl(0, 0%, 100%)
-
-    let convertedHslDark = HSLToHex(
-      HSLToArray(randomDarkColor)[0],
-      HSLToArray(randomDarkColor)[1],
-      HSLToArray(randomDarkColor)[2]
-    );
-
-    if (randomLightColor == "hsl(0, 0%, 100%)") {
-      console.log("esit");
-    }
-    let convertedHslLight = HSLToHex(
-      HSLToArray(randomLightColor)[0],
-      HSLToArray(randomLightColor)[1],
-      HSLToArray(randomLightColor)[2]
-    );
-
     if (isLocked[i] === false && !boxOpen && i <= 2) {
+      const randomDarkColor = generateDarkColorHsl();
+      let convertedHslDark = HSLtoObject(randomDarkColor);
+      convertedHslDark = HSLToHex(
+        convertedHslDark.hue,
+        convertedHslDark.saturation,
+        convertedHslDark.lightness
+      );
+
       colorPalets[i].style.backgroundColor = `${randomDarkColor}`;
       colorCode[i].innerText = `${convertedHslDark}`;
     }
+
     if (isLocked[i] === false && !boxOpen && i >= 2) {
+      const randomLightColor = generateLightColorHsl();
+      let convertedHslLight = HSLtoObject(randomLightColor);
+      convertedHslLight = HSLToHex(
+        convertedHslLight.hue,
+        convertedHslLight.saturation,
+        convertedHslLight.lightness
+      );
+
       colorPalets[i].style.backgroundColor = `${randomLightColor}`;
 
-      colorCode[i].innerText = `${
-        convertedHslLight === "102102102" ? "0" : convertedHslLight
-      }`;
+      colorCode[i].innerText = `${convertedHslLight}`;
     }
   }
 };
