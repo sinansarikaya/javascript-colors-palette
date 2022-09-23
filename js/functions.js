@@ -1,14 +1,16 @@
+// Doms
 const colorList = document.querySelector(".colorList");
 const alertDom = document.querySelector("#alert");
 
-// Random Number Generator
+//! -------  Random Number Generator -------
 const getRandomIntInclusive = (min, max) => {
   min = Math.ceil(min);
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min + 1) + min);
 };
+//! -------  Random Number Generator End -------
 
-// Alert
+//! -------  Alert System -------
 export const alert = (type, msg) => {
   if (type == "Error!") {
     alertDom.classList.add("error");
@@ -23,8 +25,9 @@ export const alert = (type, msg) => {
 
   setTimeout(() => (alertDom.style.top = "-150%"), 2000);
 };
+//! -------  Alert System End -------
 
-// Rgb to Array Converter
+//! -------  Rgb to Array Converter -------
 export const RGBToArray = (rgb) => {
   rgb = rgb
     .replace("rgb(", "")
@@ -35,14 +38,16 @@ export const RGBToArray = (rgb) => {
 
   return rgb;
 };
+//! -------  Rgb to Array Converter End -------
 
-// Hsl to Object Converter
+//! ------- Hsl to Object Converter -------
 export const HSLtoObject = (hslStr) => {
   const [hue, saturation, lightness] = hslStr.match(/\d+/g).map(Number);
   return { hue, saturation, lightness };
 };
+//! ------- Hsl to Object Converter End -------
 
-// Rgb to Hex Converter
+//! ------- Rgb to Hex Converter -------
 export const RGBToHex = (r, g, b) => {
   r = parseInt(r).toString(16);
   g = parseInt(g).toString(16);
@@ -54,8 +59,9 @@ export const RGBToHex = (r, g, b) => {
 
   return r + g + b;
 };
+//! ------- Rgb to Hex Converter End -------
 
-// Rgb to Hls Converter
+//! ------- Rgb to Hls Converter -------
 export const RGBToHSL = (r, g, b) => {
   // Make r, g, and b fractions of 1
   r /= 255;
@@ -97,9 +103,9 @@ export const RGBToHSL = (r, g, b) => {
 
   return [Math.round(h), Math.round(s), Math.round(l)];
 };
+//! ------- Rgb to Hls Converter End -------
 
-// Hsl to Hex Converter
-
+//! ------- Hsl to Hex Converter -------
 export const HSLToHex = (h, s, l) => {
   l /= 100;
   const a = (s * Math.min(l, 1 - l)) / 100;
@@ -108,12 +114,13 @@ export const HSLToHex = (h, s, l) => {
     const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
     return Math.round(255 * color)
       .toString(16)
-      .padStart(2, "0"); // convert to Hex and prefix "0" if needed
+      .padStart(2, "0");
   };
   return `${f(0)}${f(8)}${f(4)}`;
 };
+//! ------- Hsl to Hex Converter End -------
 
-// Color Variable Creator
+//! ------- Color Variable Creator -------
 export const colorVariables = (num) => {
   let colorLight = [];
   let colorDark = [];
@@ -146,8 +153,9 @@ export const colorVariables = (num) => {
 
   return clrList.reverse();
 };
+//! ------- Color Variable Creator End -------
 
-// ------- Create Color Elements -------
+//! ------- Create Color Elements -------
 export const createElement = (key, color) => {
   const newH5 = document.createElement("h5");
   const colorG = document.createElement("div");
@@ -175,8 +183,9 @@ export const createElement = (key, color) => {
     newdiv.style.backgroundColor = `#${clr}`;
   });
 };
-// ------- Create Color Elements End-------
+//! ------- Create Color Elements End -------
 
+//! ------- Generate Colors -------
 // ------- Generate Dark Colors -------
 export const generateDarkColorHsl = () => {
   const hue = getRandomIntInclusive(0, 360);
@@ -194,3 +203,4 @@ export const generateLightColorHsl = () => {
   return "hsl(" + hue + ", " + saturation + ", " + lightness + ")";
 };
 // ------- Generate Light Colors End-------
+//! ------- Generate Colors End -------

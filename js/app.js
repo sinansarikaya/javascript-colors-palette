@@ -45,15 +45,7 @@ let boxOpen = false;
 
 let selectedColor = search.value;
 
-search.addEventListener("input", () => {
-  if (!getLocalColors) {
-    selectedColor = search.value;
-    console.log(selectedColor);
-    filterColor(selectedColor);
-    getColors();
-  }
-});
-
+// -------Filter And Search Colors -------
 const filterColor = (clr) => {
   colorList.innerHTML = "";
   const filteredColor = Object.keys(getLocalColors)
@@ -65,6 +57,19 @@ const filterColor = (clr) => {
   return filteredColor;
 };
 
+search.addEventListener("input", () => {
+  selectedColor = search.value;
+  getLocalColors = localStorage.getItem("Colors Palette");
+  getLocalColors = JSON.parse(getLocalColors);
+  if (getLocalColors != "") {
+    selectedColor = search.value;
+    filterColor(selectedColor);
+    getColors();
+  }
+});
+// -------Filter And Search Colors End -------
+
+// ------- Get All Colors -------
 const getColors = () => {
   if (!search.value) {
     selectedColor = Object.keys(getLocalColors);
@@ -73,6 +78,7 @@ const getColors = () => {
     createElement(key, getLocalColors[key]);
   });
 };
+// ------- Get All Colors End -------
 
 // Check if localStorage has items or not
 if (getLocalColors == null) {
@@ -89,7 +95,7 @@ hamburger.addEventListener("click", () => {
 });
 // ------- Menu Events End -------
 
-// ------- Save Box Events -------
+//! ------- Save Box Events -------
 // Open Save Box
 saveBtn.addEventListener("click", () => {
   if (boxOpen) {
@@ -99,26 +105,33 @@ saveBtn.addEventListener("click", () => {
   boxOpen = true;
 });
 
-// Close Event
+// ------- Close Event -------
 const close = (element) => {
   element.classList.remove("active");
   boxOpen = false;
 };
+// ------- Close Event End -------
 
-// Close Save Box
+// ------- Close Save Box -------
 saveBoxClose.addEventListener("click", () => {
   close(saveBox);
 });
+// ------- Close Save Box End -------
 
-// Escape Close Box Event
+// ------- Escape Close Box Event -------
 document.addEventListener("keydown", (e) => {
   if (e.code == "Escape" && boxOpen) {
     close(saveBox);
   }
 });
+// ------- Escape Close Box Event End -------
 
-// Save Color Event
+// ------- Color Save Submit Event -------
 saveSubmit.addEventListener("click", (e) => {
+  if (!e.target.parentElement.querySelector(".pName").value) {
+    alert("Error!", "You must write a palette name!");
+    return;
+  }
   let colors = [];
 
   colorCode.forEach((colorCodeEl) => {
@@ -140,10 +153,11 @@ saveSubmit.addEventListener("click", (e) => {
 
   alert("Success!", "Color added successfully!");
 });
-// ------- Save Box Events End -------
+// ------- Color Save Submit Event End -------
+//! ------- Save Box Events End  -------
 
-// ------- Random Colors -------
-// Generate Random Colors
+//! ------- Random Colors -------
+// ------- Generate Random Colors -------
 const generateRandomColors = () => {
   for (let i = 0; i < colorPalets.length; i++) {
     if (isLocked[i] === false && !boxOpen && i <= 2) {
@@ -174,23 +188,24 @@ const generateRandomColors = () => {
     }
   }
 };
+// ------- Generate Random Colors End -------
 
-// Logo Color Event
+// ------- Logo Color Event -------
 logo.addEventListener("click", () => {
   generateRandomColors();
 });
+// ------- Logo Color Event End -------
 
-// Space Color Event
+// ------- Space Key Color Event -------
 document.addEventListener("keydown", (e) => {
   if (e.code == "Space") {
     generateRandomColors();
   }
 });
-
-//! Change Color Button ---->>
+// ------- Space Key Color Event End -------
 
 generateRandomColors();
-// ------- Random Colors End -------
+//! ------- Random Colors End -------
 
 // ------- Lock Events -------
 lock.forEach((lockEl, i) =>
@@ -210,9 +225,9 @@ lock.forEach((lockEl, i) =>
 );
 // ------- Lock Event End -------
 
-// ------- Color Container Events -------
+//! ------- Color Container Events -------
 colorContainer.addEventListener("click", (e) => {
-  // Color Variable Event
+  // ------- Color Variable Event -------
   if (e.target.classList == "material-symbols-outlined") {
     e.target.parentElement.parentElement.style.backgroundColor;
     let rgbCode = RGBToArray(
@@ -243,28 +258,32 @@ colorContainer.addEventListener("click", (e) => {
       vrbItems.innerText = RGBToHex(vrbBg[0], vrbBg[1], vrbBg[2]);
     }
   }
+  // ------- Color Variable Event End -------
 
-  // Color Copy Event
+  // ------- Color Copy Event -------
   if (e.target.classList == "fa-regular fa-copy") {
     navigator.clipboard.writeText(
       e.target.parentElement.querySelector(".color-code").innerText
     );
     alert("Success!", "Color copied successfully.");
   }
+  // ------- Color Copy Event End -------
 
-  // Color Code Type Change Event
+  // ------- Color Code Type Change Events -------
   if (e.target.classList == "color-code") {
     if (boxOpen) {
       return;
     }
     boxOpen = true;
     typeBox.classList.add("active");
-    let getBgColor = e.target.parentElement.parentElement.style.backgroundColor;
 
+    // ------- Color Typye Change Box Close Event -------
     typeBoxClose.addEventListener("click", () => {
       close(typeBox);
     });
+    // ------- Color Typye Change Box Close Event End -------
 
+    // ------- Color Typye Change Box Save Event -------
     typeBoxSave.addEventListener("click", () => {
       colorPalets.forEach((color) => {
         let changedBg = RGBToArray(color.style.backgroundColor);
@@ -280,12 +299,15 @@ colorContainer.addEventListener("click", (e) => {
           palettesText.innerText = changedBg;
         }
       });
+      close(typeBox);
     });
+    // ------- Color Typye Change Box Save Event End -------
   }
+  // ------- Color Code Type Change Events End -------
 });
-// ------- Color Container Events End -------
+//! ------- Color Container Events End -------
 
-// ------- Color Variables Click Events -------
+//! ------- Color Variables Click Events -------
 main.addEventListener("click", (e) => {
   if (e.target.className == "vrbItems") {
     for (const child of e.target.parentElement.parentElement.children) {
@@ -301,11 +323,11 @@ main.addEventListener("click", (e) => {
     e.target.parentElement.remove();
   }
 });
-// ------- Color Variables Click Events End -------
+//! ------- Color Variables Click Events End -------
 
-// Color list events from navbar
+//! -------  Color List Events From Navbar -------
 colorList.addEventListener("click", (e) => {
-  // Delete Color
+  // ------- Delete Color -------
   if (e.target.className == "fa-solid fa-xmark deleteColor") {
     e.target.parentElement.previousElementSibling.remove();
     e.target.parentElement.remove();
@@ -313,8 +335,9 @@ colorList.addEventListener("click", (e) => {
     localStorage.setItem("Colors Palette", JSON.stringify(getLocalColors));
     alert("Warning!", "Color deleted!");
   }
+  // ------- Delete Color End -------
 
-  // Use Color
+  // ------- Use Color -------
   if (e.target.className == "list-color") {
     let element = e.target.parentElement.children;
 
@@ -322,4 +345,6 @@ colorList.addEventListener("click", (e) => {
       colorPalets[i].style.backgroundColor = element[i].style.backgroundColor;
     }
   }
+  // ------- Use Color End -------
 });
+//! -------  Color List Events From Navbar End -------
