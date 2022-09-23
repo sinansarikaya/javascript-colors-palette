@@ -42,6 +42,7 @@ let palettes = {};
 
 let isLocked = [false, false, false, false, false];
 let boxOpen = false;
+let colorSelected = true;
 
 let selectedColor = search.value;
 
@@ -56,6 +57,14 @@ const filterColor = (clr) => {
     }, {});
   return filteredColor;
 };
+
+search.addEventListener("focusin", () => {
+  boxOpen = true;
+});
+
+search.addEventListener("focusout", () => {
+  boxOpen = false;
+});
 
 search.addEventListener("input", () => {
   selectedColor = search.value;
@@ -159,6 +168,10 @@ saveSubmit.addEventListener("click", (e) => {
 //! ------- Random Colors -------
 // ------- Generate Random Colors -------
 const generateRandomColors = () => {
+  if (!colorSelected) {
+    alert("Error!", "Please select a color to generate random colors");
+    return;
+  }
   for (let i = 0; i < colorPalets.length; i++) {
     if (isLocked[i] === false && !boxOpen && i <= 2) {
       const randomDarkColor = generateDarkColorHsl();
@@ -229,6 +242,8 @@ lock.forEach((lockEl, i) =>
 colorContainer.addEventListener("click", (e) => {
   // ------- Color Variable Event -------
   if (e.target.classList == "material-symbols-outlined") {
+    colorSelected = false;
+
     e.target.parentElement.parentElement.style.backgroundColor;
     let rgbCode = RGBToArray(
       e.target.parentElement.parentElement.style.backgroundColor
@@ -245,7 +260,7 @@ colorContainer.addEventListener("click", (e) => {
 
     let hlsCode = RGBToHSL(rgbCode[0], rgbCode[1], rgbCode[2]);
 
-    for (let i = 0; i < colorVariables(changedHLS[2]).length; i++) {
+    for (let i = 0; i <= 19; i++) {
       let vrbItems = document.createElement("div");
       vrbItems.setAttribute("class", "vrbItems");
       colorVrbContainer.appendChild(vrbItems);
@@ -313,6 +328,7 @@ main.addEventListener("click", (e) => {
     for (const child of e.target.parentElement.parentElement.children) {
       child.style.display = "";
     }
+    colorSelected = true;
     e.target.parentElement.parentElement.parentElement.style.backgroundColor =
       e.target.style.backgroundColor;
     let rgbBgCode = RGBToArray(e.target.style.backgroundColor);

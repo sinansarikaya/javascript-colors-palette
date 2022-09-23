@@ -19,11 +19,11 @@ export const alert = (type, msg) => {
   } else if (type == "Warning!") {
     alertDom.classList.add("warning");
   }
-  alertDom.style.top = "0";
+  alertDom.style.bottom = "0";
   alertDom.querySelector(".type").innerText = type;
   alertDom.querySelector(".description").innerText = msg;
 
-  setTimeout(() => (alertDom.style.top = "-150%"), 2000);
+  setTimeout(() => (alertDom.style.bottom = "-150%"), 2000);
 };
 //! -------  Alert System End -------
 
