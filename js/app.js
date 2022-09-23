@@ -149,12 +149,20 @@ const generateRandomColors = () => {
     const randomDarkColor = generateDarkColorHsl();
     const randomLightColor = generateLightColorHsl();
 
+    console.log(typeof randomLightColor);
+    console.log(randomLightColor);
+    let test = "hsl(0, 0%, 100%)";
+    // hsl(0, 0%, 100%)
+
     let convertedHslDark = HSLToHex(
       HSLToArray(randomDarkColor)[0],
       HSLToArray(randomDarkColor)[1],
       HSLToArray(randomDarkColor)[2]
     );
 
+    if (randomLightColor == "hsl(0, 0%, 100%)") {
+      console.log("esit");
+    }
     let convertedHslLight = HSLToHex(
       HSLToArray(randomLightColor)[0],
       HSLToArray(randomLightColor)[1],
@@ -167,7 +175,10 @@ const generateRandomColors = () => {
     }
     if (isLocked[i] === false && !boxOpen && i >= 2) {
       colorPalets[i].style.backgroundColor = `${randomLightColor}`;
-      colorCode[i].innerText = `${convertedHslLight}`;
+
+      colorCode[i].innerText = `${
+        convertedHslLight === "102102102" ? "0" : convertedHslLight
+      }`;
     }
   }
 };
