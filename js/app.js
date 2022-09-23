@@ -34,6 +34,9 @@ const logo = document.querySelector(".logo");
 const lock = document.querySelectorAll(".lock");
 const colorList = document.querySelector(".colorList");
 const search = document.querySelector(".search");
+const howWorks = document.querySelector(".how-works");
+const howWorksClose = document.querySelector(".how-works .fa-xmark");
+const question = document.querySelector(".social .fa-circle-question");
 
 // Get items from localStorage
 let getLocalColors = localStorage.getItem("Colors Palette");
@@ -44,9 +47,34 @@ let isLocked = [false, false, false, false, false];
 let boxOpen = false;
 let colorSelected = true;
 
-let selectedColor = search.value;
+//! ------- How to use section -------
+let getLocalWorks = localStorage.getItem("How Works");
+let howWorksOpen = "true";
+if (getLocalWorks != null) {
+  howWorksOpen = getLocalWorks;
+}
 
-// -------Filter And Search Colors -------
+if (howWorksOpen === "true") {
+  howWorks.classList.add("active");
+} else {
+  howWorks.classList.remove("active");
+}
+
+question.addEventListener("click", () => {
+  howWorks.classList.add("active");
+  howWorksOpen = "true";
+  localStorage.setItem("How Works", howWorksOpen);
+});
+
+howWorksClose.addEventListener("click", () => {
+  howWorksOpen = "false";
+  howWorks.classList.remove("active");
+  localStorage.setItem("How Works", howWorksOpen);
+});
+//! ------- How to use section End -------
+
+//! ------- Filter And Search Colors -------
+let selectedColor = search.value;
 const filterColor = (clr) => {
   colorList.innerHTML = "";
   const filteredColor = Object.keys(getLocalColors)
@@ -76,9 +104,9 @@ search.addEventListener("input", () => {
     getColors();
   }
 });
-// -------Filter And Search Colors End -------
+//! -------Filter And Search Colors End -------
 
-// ------- Get All Colors -------
+//! ------- Get All Colors -------
 const getColors = () => {
   if (!search.value) {
     selectedColor = Object.keys(getLocalColors);
@@ -87,7 +115,7 @@ const getColors = () => {
     createElement(key, getLocalColors[key]);
   });
 };
-// ------- Get All Colors End -------
+//! ------- Get All Colors End -------
 
 // Check if localStorage has items or not
 if (getLocalColors == null) {
@@ -138,7 +166,7 @@ document.addEventListener("keydown", (e) => {
 // ------- Color Save Submit Event -------
 saveSubmit.addEventListener("click", (e) => {
   if (!e.target.parentElement.querySelector(".pName").value) {
-    alert("Error!", "You must write a palette name!");
+    alert("Error!", "You must fill the form!");
     return;
   }
   let colors = [];
