@@ -1,5 +1,13 @@
 const colorList = document.querySelector(".colorList");
 const alertDom = document.querySelector("#alert");
+
+// Random Number Generator
+const getRandomIntInclusive = (min, max) => {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1) + min);
+};
+
 // Alert
 export const alert = (type, msg) => {
   if (type == "Error!") {
@@ -28,18 +36,10 @@ export const RGBToArray = (rgb) => {
   return rgb;
 };
 
-// Hsl to Array Converter
-export const HSLToArray = (hsl) => {
-  hsl = hsl
-    .replace("HSL(", "")
-    .replace(")", "")
-    .replace(" ", "")
-    .replace(" ", "")
-    .replace("%", "")
-    .replace("%", "")
-    .split(",");
-
-  return hsl;
+// Hsl to Object Converter
+export const HSLtoObject = (hslStr) => {
+  const [hue, saturation, lightness] = hslStr.match(/\d+/g).map(Number);
+  return { hue, saturation, lightness };
 };
 
 // Rgb to Hex Converter
@@ -99,53 +99,18 @@ export const RGBToHSL = (r, g, b) => {
 };
 
 // Hsl to Hex Converter
+
 export const HSLToHex = (h, s, l) => {
-  s /= 100;
   l /= 100;
-
-  let c = (1 - Math.abs(2 * l - 1)) * s,
-    x = c * (1 - Math.abs(((h / 60) % 2) - 1)),
-    m = l - c / 2,
-    r = 0,
-    g = 0,
-    b = 0;
-
-  if (0 <= h && h < 60) {
-    r = c;
-    g = x;
-    b = 0;
-  } else if (60 <= h && h < 120) {
-    r = x;
-    g = c;
-    b = 0;
-  } else if (120 <= h && h < 180) {
-    r = 0;
-    g = c;
-    b = x;
-  } else if (180 <= h && h < 240) {
-    r = 0;
-    g = x;
-    b = c;
-  } else if (240 <= h && h < 300) {
-    r = x;
-    g = 0;
-    b = c;
-  } else if (300 <= h && h < 360) {
-    r = c;
-    g = 0;
-    b = x;
-  }
-  // Having obtained RGB, convert channels to hex
-  r = Math.round((r + m) * 255).toString(16);
-  g = Math.round((g + m) * 255).toString(16);
-  b = Math.round((b + m) * 255).toString(16);
-
-  // Prepend 0s, if necessary
-  if (r.length == 1) r = "0" + r;
-  if (g.length == 1) g = "0" + g;
-  if (b.length == 1) b = "0" + b;
-
-  return r + g + b;
+  const a = (s * Math.min(l, 1 - l)) / 100;
+  const f = (n) => {
+    const k = (n + h / 30) % 12;
+    const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+    return Math.round(255 * color)
+      .toString(16)
+      .padStart(2, "0"); // convert to Hex and prefix "0" if needed
+  };
+  return `${f(0)}${f(8)}${f(4)}`;
 };
 
 // Color Variable Creator
@@ -214,18 +179,18 @@ export const createElement = (key, color) => {
 
 // ------- Generate Dark Colors -------
 export const generateDarkColorHsl = () => {
-  const hue = Math.floor(Math.random() * 360);
-  const saturation = Math.floor(Math.random() * (100 + 1)) + "%";
-  const lightness = Math.floor(Math.random() * (100 / 2 + 1)) + "%";
+  const hue = getRandomIntInclusive(0, 360);
+  const saturation = getRandomIntInclusive(0, 100) + "%";
+  const lightness = getRandomIntInclusive(0, 50) + "%";
   return "hsl(" + hue + ", " + saturation + ", " + lightness + ")";
 };
 // ------- Generate Dark Colors End -------
 
 // ------- Generate Light Colors -------
 export const generateLightColorHsl = () => {
-  const hue = Math.floor(Math.random() * 360);
-  const saturation = Math.floor(Math.random() * (100 + 1)) + "%";
-  const lightness = Math.floor((1 + Math.random()) * (100 / 2 + 1)) + "%";
+  const hue = getRandomIntInclusive(0, 360);
+  const saturation = getRandomIntInclusive(0, 100) + "%";
+  const lightness = getRandomIntInclusive(50, 100) + "%";
   return "hsl(" + hue + ", " + saturation + ", " + lightness + ")";
 };
 // ------- Generate Light Colors End-------
