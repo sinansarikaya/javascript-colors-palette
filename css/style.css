@@ -17,7 +17,6 @@
   box-sizing: border-box;
   font-family: "Ubuntu", sans-serif;
 }
-
 .how-works {
   position: absolute;
   background: rgba(0, 0, 0, 70%);
@@ -76,6 +75,7 @@
   z-index: 200;
   top: 10%;
   overflow: hidden;
+  z-index: -1;
 }
 #alert {
   position: absolute;
@@ -219,6 +219,7 @@ header {
 header .logo {
   width: 100px;
   height: 60px;
+  cursor: pointer;
 }
 header .save {
   font-size: 1.3rem;
@@ -463,7 +464,7 @@ footer a:hover {
   }
   main #colors {
     grid-template-columns: 1fr;
-    grid-auto-flow: row dense;
+    grid-template-rows: repeat(5, 1fr);
   }
   main #colors .palette .palette-items .colorsContainer {
     height: 100%;
