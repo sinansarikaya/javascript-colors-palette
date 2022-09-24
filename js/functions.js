@@ -1,6 +1,7 @@
 // Doms
 const colorList = document.querySelector(".colorList");
 const alertDom = document.querySelector("#alert");
+const alertContainer = document.querySelector(".alert-container");
 
 //! -------  Random Number Generator -------
 const getRandomIntInclusive = (min, max) => {
@@ -19,11 +20,15 @@ export const alert = (type, msg) => {
   } else if (type == "Warning!") {
     alertDom.classList.add("warning");
   }
+  alertContainer.style.zIndex = 1;
   alertDom.style.bottom = "0";
   alertDom.querySelector(".type").innerText = type;
   alertDom.querySelector(".description").innerText = msg;
 
-  setTimeout(() => (alertDom.style.bottom = "-150%"), 2000);
+  setTimeout(() => {
+    alertDom.style.bottom = "-150%";
+    setTimeout(() => (alertContainer.style.zIndex = -1), 500);
+  }, 2000);
 };
 //! -------  Alert System End -------
 
