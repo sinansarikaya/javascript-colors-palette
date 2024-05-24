@@ -31,6 +31,7 @@ const colorContainer = document.querySelector("#colors");
 const colorPalets = document.querySelectorAll("#colors .palette");
 const colorCode = document.querySelectorAll(".color-code");
 const logo = document.querySelector(".logo");
+const colorBtn = document.querySelector(".change-color");
 const lock = document.querySelectorAll(".lock");
 const colorList = document.querySelector(".colorList");
 const search = document.querySelector(".search");
@@ -244,6 +245,12 @@ document.addEventListener("keydown", (e) => {
   }
 });
 // ------- Space Key Color Event End -------
+
+// ------- Button Color Event -------
+colorBtn.addEventListener("click", () => {
+  generateRandomColors();
+});
+// ------- Button Color Event End -------
 
 generateRandomColors();
 //! ------- Random Colors End -------
